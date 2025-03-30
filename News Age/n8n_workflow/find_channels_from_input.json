@@ -1,0 +1,261 @@
+{
+  "name": "find_channels_from_input",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -200,
+        0
+      ],
+      "id": "38e4f3f5-3972-49de-bb52-06065f3c7768",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ea3be1c-ca53-4219-a9c1-1152ea4ac5eb",
+              "name": "output",
+              "value": "voici les composant",
+              "type": "string"
+            },
+            {
+              "id": "155dcb57-53f9-44f3-913b-b9113147b450",
+              "name": "component",
+              "value": "channel",
+              "type": "string"
+            },
+            {
+              "id": "9ffdb7fa-042d-429a-ab69-d2ce6ec54c80",
+              "name": "components_id",
+              "value": "={{ $json.channel_id }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1060,
+        0
+      ],
+      "id": "a3e0180f-e053-4de7-9df2-2697b175ee22",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://qdrant.meetmagnet.fr/collections/hackathlon/points/query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": [{{ $('sujet embeding').item.json.embeddings[0] }}],\n  \"limit\": 2,\n  \"filter\": {\n    \"must\": [\n      {\n        \"key\": \"table\",\n        \"match\": {\n          \"value\": \"channel\"\n        }\n      }\n    ]\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "dcc384cf-ac1e-4abf-bc82-a9c4eac1fe82",
+      "name": "GetPoint3"
+    },
+    {
+      "parameters": {
+        "url": "=https://qdrant.meetmagnet.fr/collections/hackathlon/points/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer coding-bibliotheque-nante-selft-embedding"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        0
+      ],
+      "id": "5610726d-997d-4188-a8ae-8e3da99980c5",
+      "name": "getPointInfo6",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/embed",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "all-minilm:l6-v2"
+            },
+            {
+              "name": "input",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4d3cc557-4ebd-45f5-bad6-ad766c427dae",
+      "name": "sujet embeding"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "result.points",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "0fa31045-a08b-4634-a9ac-252f1bb09446",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "result.payload.channel_id"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        840,
+        0
+      ],
+      "id": "02b0adc7-53f9-494c-af47-109e95744108",
+      "name": "Aggregate1"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "chaussure"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "sujet embeding",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetPoint3": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getPointInfo6": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sujet embeding": {
+      "main": [
+        [
+          {
+            "node": "GetPoint3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "getPointInfo6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "429e7804-c0f5-42b1-b22a-56c1ff655eb2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "1zHdHPyMI2G2Fake",
+  "tags": [
+    {
+      "createdAt": "2025-03-29T20:54:49.609Z",
+      "updatedAt": "2025-03-29T20:54:49.609Z",
+      "id": "D2USphdOGO8ASQdY",
+      "name": "hakathlon"
+    }
+  ]
+}

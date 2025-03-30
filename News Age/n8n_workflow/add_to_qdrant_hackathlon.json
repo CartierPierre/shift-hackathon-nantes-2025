@@ -1,0 +1,257 @@
+{
+  "name": "add_to_qdrant_hackathlon",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://qdrant.meetmagnet.fr/collections/hackathlon/points?wait=true",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"points\": [\n    {\n      \"id\": \"{{ $json.id }}\",\n      \"vector\": [{{ $('Crypto2').item.json.embeddings[0] }}],\n      \"payload\": {{ $json.payload.toJsonString() }}\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        940,
+        0
+      ],
+      "id": "5090a6b8-9627-4032-bb1e-c0b192fb9f49",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "id"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        500,
+        0
+      ],
+      "id": "0e2e24dd-7743-4f13-8a2f-fed5b45209bf",
+      "name": "Crypto2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "611bc999-8e61-4602-beef-59a4b33521b3",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "9247450f-3af9-4647-aea8-8e4c17301071",
+              "name": "payload.thematique",
+              "value": "={{ $('input').item.json.thematique }}",
+              "type": "string"
+            },
+            {
+              "id": "9abaf5dd-0c72-49c2-ae3a-4223561a2de5",
+              "name": "payload.date_article",
+              "value": "={{ $('input').item.json.date_article }}",
+              "type": "string"
+            },
+            {
+              "id": "d3ebf652-fe45-4bfc-80c8-bbdd466a4641",
+              "name": "payload.source",
+              "value": "={{ $('input').item.json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "c2ebecd7-c6b8-4c80-9a8c-cc47b51b225a",
+              "name": "payload.acteurs",
+              "value": "={{ $('input').item.json.acteurs }}",
+              "type": "string"
+            },
+            {
+              "id": "813707c0-3c03-470f-bbc4-0a19f82d7ca4",
+              "name": "payload.text",
+              "value": "={{ $('input').item.json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "8c0bc006-754f-4ba1-a39e-321a103b11b4",
+              "name": "payload.id_table",
+              "value": "={{ $('input').item.json.id_table }}",
+              "type": "string"
+            },
+            {
+              "id": "0c780604-b4f1-4e85-94c7-66621045c14a",
+              "name": "payload.type",
+              "value": "={{ $('input').item.json.type }}",
+              "type": "string"
+            },
+            {
+              "id": "80d9d026-c96c-4669-b726-5a3f99fd6aed",
+              "name": "payload.table",
+              "value": "={{ $('input').item.json.table }}",
+              "type": "string"
+            },
+            {
+              "id": "d870c295-3fb8-4f9b-ba82-070304cddd08",
+              "name": "payload.user_id",
+              "value": "={{ $('input').item.json.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "2bbac10e-d7b7-47af-8742-056eac3cc1a2",
+              "name": "payload.channel_id",
+              "value": "={{ $('input').item.json.channel_id }}",
+              "type": "string"
+            },
+            {
+              "id": "83af45d7-db97-45c7-8846-a0b94c02a162",
+              "name": "embeddings",
+              "value": "={{ $json.embeddings }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        0
+      ],
+      "id": "4aaafbc5-a638-4b63-ae3f-f30914432b15",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/embed",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "all-minilm:l6-v2"
+            },
+            {
+              "name": "input",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "71b67820-d721-47e5-b07c-32c046d79af9",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4f985eca-20df-44bd-bbfa-64a4cf75c484",
+      "name": "input"
+    }
+  ],
+  "pinData": {
+    "input": [
+      {
+        "json": {
+          "id_table": "324",
+          "thematique": "[\"Littérature\",\"Sélection de livres\"]",
+          "date_article": "2025-03-29",
+          "source": "[{\"type\":\"Vogue France\"}]",
+          "acteurs": "[{\"nom\":\"Sophie Rosemont\"}]",
+          "text": "Cet article présente une sélection de 11 livres à lire pour le printemps 2025. Il inclut des romans, des essais et des biographies, offrant une variété de genres pour tous les goûts littéraires.",
+          "type": "resume",
+          "table": "article",
+          "user_id": "0706e843-8c00-4ac8-af22-67a8e35cbb9d",
+          "channel_id": "55db1e8b-7db6-41a0-b97a-f23015f9f7e7"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Crypto2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Crypto2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "input": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b4707d63-8fa2-4bcc-bc4a-dac405bcb0b2",
+  "meta": {
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "1hEyQ4TXVXZwqTgp",
+  "tags": [
+    {
+      "createdAt": "2025-03-29T20:54:49.609Z",
+      "updatedAt": "2025-03-29T20:54:49.609Z",
+      "id": "D2USphdOGO8ASQdY",
+      "name": "hakathlon"
+    }
+  ]
+}

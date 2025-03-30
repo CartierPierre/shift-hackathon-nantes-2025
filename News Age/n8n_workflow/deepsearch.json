@@ -1,0 +1,283 @@
+{
+  "name": "deepsearch",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=sélectionne les articles récent selon ce critère de décision : \n\n{mode }\n\n\nVoici plusieurs articles de la source nomée \"{vogue}\"\n\n\nDescripton des acrticles : \n{{ $json.data }}\n\n__\nAujourd'hui est le {{ $now.format('dd-MM-yyyy') }}. \nSélectionne les articles les plus récents  et les plus pertinents. \nSélectionne seulement les articles datant de moins de 3 mois, ignore les autres. \nRetourne les articlces sélectionnés au format demandé. \n ",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=sélectionne les articles récent selon ce critère de décision :\n\n{modre}\n\nTu dois retourner au format JSON les données que tu trouves pertinentes. \n\nVoici l'exemple de JSON en sortir \n\n  {\n\n    \"url\": \"https://example.com/article1\",\n    \"pourquoi\": \"Comprendre l'impact du changement climatique\",\n    \"resume\": \"Cet article explore les effets du changement climatique sur les écosystèmes. rédiger un résumé en 5 lignes\",\n    \"img\": \"https://example.com/images/article1.jpg\",\n    \"date_article\": \"2023-01-05\",\n    \"auteur\": \"Jean Dupont\",\n    \"acteurs\": [\n      {\n        \"nom\": \"Organisation Mondiale de la Santé\",\n        \"role\": \"Auteur principal\"\n      },\n      {\n        \"nom\": \"Université de Paris\",\n        \"role\": \"Contributeur\"\n      }\n    ],\n    \"source\": [\n      {\n        \"nom\": \"Revue Scientifique\",\n        \"lien\": \"https://revue-scientifique.com/article1\"\n      }\n    ],\n    \"thematique\": \"Environnement\"\n  }"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        720,
+        0
+      ],
+      "id": "d2af125f-6879-428a-83d9-0dfe7fc108fc",
+      "name": "Basic LLM Chain",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "=https://r.jina.ai/{{ $json['url de recherche '] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "jina_ea7058df177a4a0cbe01e3534974a56bur4td0_Wxy8omicDpC0MIUWuDkRR"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        0
+      ],
+      "id": "eca91631-5a81-41cd-adf3-69bb658bf000",
+      "name": "getWebsite2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n\n    \"url\": \"https://example.com/article1\",\n    \"pourquoi\": \"Comprendre l'impact du changement climatique\",\n    \"resume\": \"Cet article explore les effets du changement climatique sur les écosystèmes. rédiger un résumé en 5 lignes\",\n    \"img\": \"https://example.com/images/article1.jpg\",\n    \"date_article\": \"2023-01-05\",\n    \"auteur\": \"Jean Dupont\",\n    \"acteurs\": [\n      {\n        \"nom\": \"Organisation Mondiale de la Santé\",\n        \"role\": \"Auteur principal\"\n      },\n      {\n        \"nom\": \"Université de Paris\",\n        \"role\": \"Contributeur\"\n      }\n    ],\n    \"source\": [\n      {\n        \"nom\": \"Revue Scientifique\",\n        \"lien\": \"https://revue-scientifique.com/article1\"\n      }\n    ],\n    \"thematique\": \"Environnement\"\n  }\n]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        180
+      ],
+      "id": "18befcf7-bbfd-4349-90b8-870c51074124",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        740,
+        180
+      ],
+      "id": "e13e5bf1-5efb-4b17-8a75-b4808a086a6e",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "nIClK0kbYdBpLiw3",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -140,
+        0
+      ],
+      "id": "a9e301f1-a725-4ffc-996a-ab0dc0bfb3ef",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d2f1cff-19bd-44c3-8eaf-17afb46134b5",
+              "name": "url de recherche ",
+              "value": "https://www.vogue.fr/culture",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        0
+      ],
+      "id": "28f9a02e-7852-4396-a504-09d8f325e869",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e3fdb3c-bc50-4396-b30a-82f50ebd9c17",
+              "name": "traitement",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1080,
+        0
+      ],
+      "id": "d95f0300-fb13-453c-8533-c23482f450a5",
+      "name": "traitement"
+    },
+    {
+      "parameters": {
+        "content": "## plusieur rag , pour obteir toutes les datas\n",
+        "height": 260,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        -260
+      ],
+      "typeVersion": 1,
+      "id": "bf570f5b-8d8b-4f2e-9e76-371d62457aaf",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.n8n-dev.meetmagnet.fr/webhook/scraping",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1820,
+        0
+      ],
+      "id": "17d5539e-0f68-4738-b320-cd10c82c5bba",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## donnée à envoyer dans le body \n\ncreated_at\nurl\npourquoi\nresume\nimg\ndate_article\nauteur\nacteurs\nsource\nthematique\n",
+        "height": 380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        -300
+      ],
+      "typeVersion": 1,
+      "id": "16965888-82fe-41f7-a37b-835ab84b80ab",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "getWebsite2": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "getWebsite2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "traitement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "traitement": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "46a15628-eb0d-4000-90e1-d5643d2979bf",
+  "meta": {
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "sxVYmeMEY2w6PBXs",
+  "tags": []
+}

@@ -1,0 +1,843 @@
+{
+  "name": "other-tool-hackathlon",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -300,
+        -200
+      ],
+      "id": "00a68592-dbf5-40ac-9fdf-0b643d9508f9",
+      "name": "input_agent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://qdrant.meetmagnet.fr/collections/hackathlon/points/query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": [{{ $('sujet embeding').item.json.embeddings[0] }}],\n  \"limit\": 5,\n  \"filter\": {\n    \"must\": [\n      {\n        \"key\": \"table\",\n        \"match\": {\n          \"value\": \"article\"\n        }\n      },\n      {\n        \"key\": \"type\",\n        \"match\": {\n          \"value\": \"resume\"\n        }\n      }\n    ]\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        -200
+      ],
+      "id": "cd029278-8ce1-4c5e-86b7-f2725c7c8f5f",
+      "name": "GetPoint3"
+    },
+    {
+      "parameters": {
+        "url": "=https://qdrant.meetmagnet.fr/collections/hackathlon/points/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        -200
+      ],
+      "id": "095ebf47-0406-42a3-a395-30bc852c28a6",
+      "name": "getPointInfo6",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/embed",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "all-minilm:l6-v2"
+            },
+            {
+              "name": "input",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -20,
+        -200
+      ],
+      "id": "19ec694b-c137-403c-a66f-caa071397cd4",
+      "name": "sujet embeding"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dae07663-f4ff-4642-a053-31804cb92da9",
+              "name": "id_article",
+              "value": "={{ $json.result.payload.id_table }}",
+              "type": "string"
+            },
+            {
+              "id": "950749a4-0c0d-4a33-9a2e-7a35b5021e5d",
+              "name": "PostContent",
+              "value": "={{ $json.result.payload.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        -200
+      ],
+      "id": "298475f6-3226-4507-96dc-7c686c16e6d8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "result.points",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        360,
+        -200
+      ],
+      "id": "02c98367-19b0-42f2-92be-a647d2e716ec",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        -200
+      ],
+      "id": "1e9b7960-48f5-40e2-afa0-15ecc0d8ce5f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "collection": "prospect",
+        "options": {},
+        "query": "={ \"_id\":  \"{{ $json.idMongoDb }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [
+        1340,
+        -420
+      ],
+      "id": "1932f500-b662-4027-8b2f-7f03332271f0",
+      "name": "MongoDB",
+      "credentials": {
+        "mongoDb": {
+          "id": "UwOpwN8XPMHwc2gq",
+          "name": "MongoDB selfhosted"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e30ad4c-baa1-49bd-9ed1-8b8655e663fc",
+              "name": "pourquoi",
+              "value": "={{ $('Supabase').item.json.pourquoi }}",
+              "type": "string"
+            },
+            {
+              "id": "2dd3f1ba-4dee-4ca4-bee9-1c0680b56a8f",
+              "name": "resume",
+              "value": "={{ $('Supabase').item.json.resume }}",
+              "type": "string"
+            },
+            {
+              "id": "9248f076-42c6-4b5f-b9c7-650d497b0583",
+              "name": "url",
+              "value": "={{ $('Supabase').item.json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "fc1ea21a-2672-409f-b04a-4b8acc209111",
+              "name": "auteur",
+              "value": "={{ $('Supabase').item.json.auteur }}",
+              "type": "string"
+            },
+            {
+              "id": "f64450a1-e3b9-4ecc-a345-d3a43bca0bdf",
+              "name": "date_article",
+              "value": "={{ $('Supabase').item.json.date_article }}",
+              "type": "string"
+            },
+            {
+              "id": "e15c1c17-7a0b-4511-8974-8a7a10878790",
+              "name": "thematique",
+              "value": "={{ $('Supabase').item.json.thematique }}",
+              "type": "string"
+            },
+            {
+              "id": "31cd4371-0ece-4622-ba69-1a5bdac03ff9",
+              "name": "source",
+              "value": "={{ $('Supabase').item.json.source }}",
+              "type": "array"
+            },
+            {
+              "id": "e35e86b8-264d-4c15-bf81-87aecc8a350f",
+              "name": "id",
+              "value": "={{ $('Supabase').item.json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "223dd65a-a242-4e4a-964b-dd4a34794cef",
+              "name": "Information à capter dans l'article ",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "cd7e0477-463f-4e38-a67b-4fad462760e3",
+              "name": "thématique à capter dans l'article ",
+              "value": "={{ $('GetChanel').item.json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "b7c5ed3b-11a0-4205-8a50-47a2545777ae",
+              "name": "user_id",
+              "value": "={{ $json.user_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1580,
+        -200
+      ],
+      "id": "8591f67e-bd5d-496a-a338-a302c35f8093",
+      "name": "InPutAgent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Rédige un cours résumé de l'ensemble des informations suivantes pour présenter de façon efficace et ultra pertinentes les informations à l'utilisateur. \n\nutilise les information à capter dans l'article pour filtrer la qualité des aricles et résumer la pertinence en maximume 5 lignes.  \n\n\nVoici les articles à résumer :  \n\n\n{{ $json.data.toJsonString() }}\n\n\n\nRédige en 5 phrases maximum.",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        2300,
+        -200
+      ],
+      "id": "f84babbe-198b-4796-b8a2-34112783ae11",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "date_article"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        -200
+      ],
+      "id": "311ce971-b7f4-450b-99bf-6c77bc395292",
+      "name": "Sort"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2300,
+        40
+      ],
+      "id": "2752f16c-38e6-47dc-8416-eeb9f7165be7",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "nIClK0kbYdBpLiw3",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ea3be1c-ca53-4219-a9c1-1152ea4ac5eb",
+              "name": "output",
+              "value": "voici les composant",
+              "type": "string"
+            },
+            {
+              "id": "155dcb57-53f9-44f3-913b-b9113147b450",
+              "name": "component",
+              "value": "channel",
+              "type": "string"
+            },
+            {
+              "id": "9ffdb7fa-042d-429a-ab69-d2ce6ec54c80",
+              "name": "components_id",
+              "value": "={{ $json.channel_id }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -700
+      ],
+      "id": "6b024298-ee3d-4c67-b9ba-4a0a87dac419",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ea3be1c-ca53-4219-a9c1-1152ea4ac5eb",
+              "name": "output",
+              "value": "={{ $('Edit Fields3').item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "155dcb57-53f9-44f3-913b-b9113147b450",
+              "name": "component",
+              "value": "article",
+              "type": "string"
+            },
+            {
+              "id": "9ffdb7fa-042d-429a-ab69-d2ce6ec54c80",
+              "name": "components_id",
+              "value": "={{ $json.article_ids }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3140,
+        -220
+      ],
+      "id": "16fc067b-918d-4c15-b2a4-ec31f64f0267",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "channels",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.channel_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        -200
+      ],
+      "id": "2a68dc27-b7c9-41cb-8a2f-038d0ea36661",
+      "name": "GetChanel",
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "profiles",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.user_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        -360
+      ],
+      "id": "ce8682e9-953d-4077-ad33-76f16c93ba4c",
+      "name": "Getuser",
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "channels",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        -400
+      ],
+      "id": "a67aa109-53e2-4ea4-9c4a-d8fe7aecc465",
+      "name": "Getuser1",
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://YOUR_SUPABASE_URL/rest/v1/article",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "eq.303"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "YOUR_SUPABASE_ANON_KEY"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_SUPABASE_ANON_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        40
+      ],
+      "id": "d7900360-e583-4731-94cb-0e4181ccb91e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://ylajhwvxwcueslbvcvmc.supabase.co/rest/v1/articles",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "eq.303"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlsYWpod3Z4d2N1ZXNsYnZjdm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyNDQxMDksImV4cCI6MjA1ODgyMDEwOX0.zsUjuhKIJxUtZ2sv0FdtN-ZyAt7Ka0chxsixm-9MH_4"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlsYWpod3Z4d2N1ZXNsYnZjdm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMyNDQxMDksImV4cCI6MjA1ODgyMDEwOX0.zsUjuhKIJxUtZ2sv0FdtN-ZyAt7Ka0chxsixm-9MH_4"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        60
+      ],
+      "id": "9a01fb05-0630-425a-bb4a-d8867a2f65d5",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "articles",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.id_article }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -200
+      ],
+      "id": "fc2b53c7-109a-4f0c-a216-97434c352b72",
+      "name": "Supabase",
+      "retryOnFail": true,
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraire les ID des articles\nconst articleIds = $input.all().flatMap(item => item.json.data.map(article => article.id.toString()));\n\n// Ajouter la liste des IDs à la sortie\nreturn [{ json: { article_ids: articleIds } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2840,
+        -220
+      ],
+      "id": "f2ec3357-7e88-4443-a0b8-378000c7f0a1",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0589bcae-b4f3-4795-9fe4-907c1b923ae1",
+              "name": "output",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "a9bcea98-46de-475f-b0ee-a06b82812460",
+              "name": "data",
+              "value": "={{ $('Aggregate').item.json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2640,
+        -220
+      ],
+      "id": "053d96f7-e6b8-454c-ad9a-7d3093c7aa8a",
+      "name": "Edit Fields3"
+    }
+  ],
+  "pinData": {
+    "input_agent": [
+      {
+        "json": {
+          "query": "chaussure"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "GetPoint3": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getPointInfo6": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sujet embeding": {
+      "main": [
+        [
+          {
+            "node": "GetPoint3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "getPointInfo6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB": {
+      "main": [
+        []
+      ]
+    },
+    "InPutAgent": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "input_agent": {
+      "main": [
+        [
+          {
+            "node": "sujet embeding",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetChanel": {
+      "main": [
+        [
+          {
+            "node": "InPutAgent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Getuser": {
+      "main": [
+        []
+      ]
+    },
+    "Getuser1": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "GetChanel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "17e7a29a-679e-420a-bd4b-b51929a7f643",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "V13CsCxJNWxpwbbQ",
+  "tags": []
+}

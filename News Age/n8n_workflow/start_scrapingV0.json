@@ -1,0 +1,350 @@
+{
+  "name": "start-scrapingV0",
+  "nodes": [
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.sources",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "body.user_id, body.channels",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        160,
+        0
+      ],
+      "id": "ef5162b6-6ac9-4d09-a039-e0c20c8ac0dd",
+      "name": "Split Out2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "start-scraping",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        0
+      ],
+      "id": "c52d6383-1abd-43a8-9011-145a0f23db14",
+      "name": "Webhook",
+      "webhookId": "ed02bcd9-3e42-481f-b156-47582c569b01"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "CArxsXAiS2I2CyjH",
+          "mode": "list",
+          "cachedResultName": "scraping-source"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1220,
+        0
+      ],
+      "id": "8fcb8088-bf85-4b87-9bca-c2bd0a0935e5",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "channels",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "user_id, name, description, url, note",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        680,
+        0
+      ],
+      "id": "d34a5bbd-bef0-4c8d-b142-d768e9bc1aea",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a1ed4f0-71a1-4cd8-9634-51b1cb7fcc87",
+              "name": "channels_id",
+              "value": "={{ $json['body.channels'][0].id }}",
+              "type": "string"
+            },
+            {
+              "id": "956bb2c6-3afb-4b2e-a1dc-1b8f535e44bd",
+              "name": "channels",
+              "value": "={{ $json['body.channels'] }}",
+              "type": "array"
+            },
+            {
+              "id": "193d4f39-84c4-4fd1-bd17-c1b71e21cdef",
+              "name": "user_id",
+              "value": "={{ $json['body.user_id'] }}",
+              "type": "string"
+            },
+            {
+              "id": "27741852-fbca-4895-97ed-fd68494ab642",
+              "name": "name",
+              "value": "={{ $json['body.sources'].name }}",
+              "type": "string"
+            },
+            {
+              "id": "cf078630-7c1e-4c9b-a186-f552bae23cad",
+              "name": "description",
+              "value": "={{ $json['body.sources'].description }}",
+              "type": "string"
+            },
+            {
+              "id": "6df70419-7f9e-4618-9428-d33ce2010ad3",
+              "name": "url",
+              "value": "={{ $json['body.sources'].url }}",
+              "type": "string"
+            },
+            {
+              "id": "5dcb920f-e223-4b3c-9885-44d4ed906218",
+              "name": "note",
+              "value": "={{ $json['body.sources'].notes }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        0
+      ],
+      "id": "0ea88ee6-8fcf-41af-878a-46d4cea868f5",
+      "name": "data"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "193d4f39-84c4-4fd1-bd17-c1b71e21cdef",
+              "name": "user_id",
+              "value": "={{ $json.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "54162ff7-e13e-46ae-8f25-a4a274ff3037",
+              "name": "channels_id",
+              "value": "={{ $json.channels.id }}",
+              "type": "string"
+            },
+            {
+              "id": "27741852-fbca-4895-97ed-fd68494ab642",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "cf078630-7c1e-4c9b-a186-f552bae23cad",
+              "name": "description",
+              "value": "={{ $json.description }}",
+              "type": "string"
+            },
+            {
+              "id": "6df70419-7f9e-4618-9428-d33ce2010ad3",
+              "name": "url",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "5dcb920f-e223-4b3c-9885-44d4ed906218",
+              "name": "note",
+              "value": "={{ $json.note }}",
+              "type": "string"
+            },
+            {
+              "id": "81922f87-6e22-4b71-b15c-b67dd8b815d9",
+              "name": "prompt",
+              "value": "={{ $json.channels.prompt }}",
+              "type": "string"
+            },
+            {
+              "id": "0d2795be-832f-4b2a-8224-1f6c5566eb06",
+              "name": "description",
+              "value": "={{ $json.channels.description }}",
+              "type": "string"
+            },
+            {
+              "id": "243f9ad9-a70e-4270-8c0e-7a6b2e510338",
+              "name": "tags",
+              "value": "={{ $json.channels.tags }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        0
+      ],
+      "id": "26985723-ec92-45c2-bd92-91d0f46f8dc3",
+      "name": "data1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "connection": "upgrade",
+            "host": "www.n8n-dev.meetmagnet.fr",
+            "x-real-ip": "85.208.217.85",
+            "x-forwarded-for": "85.208.217.85",
+            "x-forwarded-proto": "https",
+            "content-length": "1538",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "sec-ch-ua": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+            "content-type": "application/json",
+            "sec-ch-ua-mobile": "?0",
+            "accept": "*/*",
+            "origin": "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--33edf5bb.local-credentialless.webcontainer-api.io",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--33edf5bb.local-credentialless.webcontainer-api.io/",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "user_id": "0706e843-8c00-4ac8-af22-67a8e35cbb9d",
+            "channels": [
+              {
+                "id": "a14789dc-9c93-4b60-91b8-cb7993570cbd",
+                "prompt": "Je cherche des informations récentes et pertinentes sur la décarbonation dans le secteur agroalimentaire, en particulier :\n\n    Laiteries, biscuiteries, transformation de fruits et légumes, production de sodas, bonbons, chocolats, etc.\n\n    Je suis intéressé par les nouveaux projets d’usines agroalimentaires intégrant des démarches de décarbonation (réduction des émissions, efficacité énergétique, énergies renouvelables, etc.).\n\n    Merci d’exclure les secteurs suivants : abattoirs, chimie, transformation du bois.\n\nFournis-moi des articles, projets, études de cas ou annonces mettant en avant des actions concrètes, technologies, partenaires, ou objectifs climatiques liés à la décarbonation dans ces filières",
+                "description": "Suivez l'actualité des nouvelles technologies",
+                "tags": [
+                  "Tech",
+                  "décarbonation"
+                ]
+              },
+              {
+                "id": "55db1e8b-7db6-41a0-b97a-f23015f9f7e7",
+                "prompt": "Je cherche à identifier des informations pertinentes sur la gestion et le traitement des eaux usées, en particulier : les projets de réutilisation des eaux usées traitées (REUSE/REUT), les investissements dans des startups du secteur, les rénovations, déménagements, relocalisations ou délocalisations d’usines liées au traitement de l’eau.",
+                "description": "",
+                "tags": [
+                  "eau"
+                ]
+              }
+            ],
+            "sources": [
+              {
+                "name": "Usine Nouvelle",
+                "description": "Site de l'usine nouvelle ",
+                "url": "https://www.usinenouvelle.com/",
+                "notes": ""
+              }
+            ]
+          },
+          "webhookUrl": "https://www.n8n-dev.meetmagnet.fr/webhook/start-scraping",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Split Out2": {
+      "main": [
+        [
+          {
+            "node": "data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Split Out2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data1": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "19a74ddd-d868-464b-9a76-fc497ae1db3b",
+  "meta": {
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "NH0DPelMJ0xHsqxL",
+  "tags": [
+    {
+      "createdAt": "2025-03-29T20:54:49.609Z",
+      "updatedAt": "2025-03-29T20:54:49.609Z",
+      "id": "D2USphdOGO8ASQdY",
+      "name": "hakathlon"
+    }
+  ]
+}
