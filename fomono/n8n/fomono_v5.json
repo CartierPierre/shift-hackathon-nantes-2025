@@ -1,0 +1,945 @@
+{
+  "name": "fomono_v5",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "id": "25dd6806-d111-4f8c-853b-7f6ced888f71",
+      "name": "Listen for incoming events",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        -640,
+        -520
+      ],
+      "webhookId": "0a520b8b-ece5-4291-bc64-65072f695c6b",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "KDjFtgzHdrRXKafw",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "a0bf9719-4272-46f6-ab3b-eda6f7b44fd8",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $('Listen for incoming events').item.json.message.text }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "506d107d-ed0b-4035-b39b-433eda825d64",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        900,
+        -530
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "text",
+              "stringValue": "={{ $('Listen for incoming events').item.json.message.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0b414e0d-a70c-4ce6-b86a-67f29c4969f6",
+      "name": "Voice or Text",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        680,
+        -530
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Listen for incoming events').item.json.message.voice.file_id }}"
+      },
+      "id": "9ff8bdd5-0224-41d4-b0ad-0be9a89f859e",
+      "name": "Get Voice File",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        1120,
+        -630
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "7e498a53-4b51-46ab-97eb-f4ae52cb8173",
+      "credentials": {
+        "telegramApi": {
+          "id": "KDjFtgzHdrRXKafw",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Process Telegram Request\n",
+        "height": 479,
+        "width": 816,
+        "color": 5
+      },
+      "id": "bf48cb86-94b8-45d5-a1ee-e2572aded85c",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        672,
+        -749
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "flat_events2",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -530
+      ],
+      "id": "2f3e471e-6898-4cc9-be5b-31a907c2eafd",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "CG288UHpoSugFCwK",
+          "name": "Supabase account Fomono"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.elevenlabs.io/v1/speech-to-text",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "sk_52cfc481c708f9d4d94a10b9a50ca7dd8f2f32fb0fc159b1"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model_id",
+              "value": "scribe_v1"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1340,
+        -620
+      ],
+      "id": "3135ae3d-0df5-423e-b912-c3bf5fefa37c",
+      "name": "Voice transcript"
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "chatId": "={{ $('Listen for incoming events').item.json.message.chat.id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1340,
+        -420
+      ],
+      "id": "2692e9d1-eeee-4f29-95dc-22dc442d6fac",
+      "name": "Telegram raw text message",
+      "webhookId": "f130ca22-dbe7-4c4b-8eb2-6d479add4977",
+      "alwaysOutputData": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "KDjFtgzHdrRXKafw",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        -530
+      ],
+      "id": "30d67d83-5d53-419f-8078-d0afb3243f4f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "users",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $('Listen for incoming events').item.json.message.from.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        20,
+        -530
+      ],
+      "id": "132f97de-33d0-417e-b795-8840498c7a5a",
+      "name": "Supabase_users",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "CG288UHpoSugFCwK",
+          "name": "Supabase account Fomono"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Listen for incoming events').item.json.message.text }}\n{{ $json.text }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Tu es un assistant chargé d'extraire et de fusionner des informations pertinentes sur un utilisateur à partir d'un message qu'il a envoyé avec les informations réellement connues de l'utilisateur. Ton objectif est de compléter ou mettre à jour ce document JSON existant avec les paramètres suivants :\n\n- `name` (string) : le prénom ou nom complet de l'utilisateur.\n- `cultural_taste` (string) : préférences culturelles, par exemple des goûts musicaux, cinématographiques, littéraires ou artistiques mentionnés.\n- `location` (string) : la ville, région ou pays où réside l'utilisateur.\n- `children` (integer) : le nombre d'enfants que possède l'utilisateur.\n- `age` (integer) : l'âge exact ou approximatif mentionné explicitement ou implicitement (obligatoire).\n- `message` (string) : un message naturel, sympathique et convivial destiné à l'utilisateur pour récupérer des informations manquantes si nécessaire.\n\nInstructions :\n1. Analyse attentivement le message utilisateur et fusionne les nouvelles informations identifiées avec celles déjà présentes dans le document.\n2. Si l'information obligatoire `cultural_taste` est absente, remplis l'attribut `message` avec un message naturel, sympathique et convivial destiné à l'utilisateur, afin qu'il fournisse l'information manquante. Sinon, laisse `message` vide.\n3. Fournis systématiquement tous les attributs possibles dans ta réponse. Si une information n'est pas présente ou inchangée, indique-la avec une valeur vide (\"\").\n4. Fournis le résultat sous format JSON clair et valide, prêt à être directement sauvegardé dans la base de données.\n\nExemple :\n\nInformation réellement connues de l'utilisateur :\n\n-  \"name\": \"Marie\",\n-  \"cultural_taste\": \"\",\n-  \"location\": \"Bordeaux\",\n-  \"children\": 1,\n-  \"children_ages\": [\"2\", \"8\"],\n-  \"past_event\": \"\",\n-  \"age\": \"\",\n-  \"message\": \"\",\n-  \"messages\": {{ $if($('Supabase_users').item.json.messages != null, $('Supabase_users').item.json.messages.map(item => item.type + ': \\\"' + item.text + '\\\"').join(', '), \"\") }}\n\nMessage utilisateur :\n« {{ !!$json?.text ? $json?.text : $('Listen for incoming events').item.json.message.text }} »\n\nRésultat si information manquante :\n```json\n{\n  \"name\": \"Marie\",\n  \"cultural_taste\": \"\",\n  \"location\": \"Bordeaux\",\n  \"children\": 2,\n  \"age\": \"\",\n  \"message\": \"Ok ! Pourrais-tu me donner tes goûts culturels pour que je puisse compléter ton profil ? Merci ! 😊\",\n  \"messages\": {{ $if($('Supabase_users').item.json.messages != null, $('Supabase_users').item.json.messages.toJsonString(), '[]') }}\n}\n```\n\nRésultat après réponse :\n```json\n{\n  \"name\": \"Marie\",\n  \"cultural_taste\": \"jazz, cinéma classique\",\n  \"location\": \"Bordeaux\",\n  \"children\": 2,\n  \"children_ages\": [\"2\", \"8\"],\n  \"past_event\": \"\",\n  \"age\": \"\",\n  \"message\": \"\",\n  \"messages\": [{{ $if($('Supabase_users').item.json.messages != null, $('Supabase_users').item.json.messages.append({\"type\": \"user\", \"text\": !!$json?.text ? $json?.text : $('Listen for incoming events').item.json.message.text}).toJsonString(), [{\"type\": \"user\", \"text\": !!$json?.text ? $json?.text : $('Listen for incoming events').item.json.message.text}].toJsonString()) }}]\n}\n```\n\n\n\nInformation réellement connues de l'utilisateur : \n{{ $('Supabase_users').item.json.toJsonString() }}\n\n\nMessage utiisateur :\n{{ $('Listen for incoming events').item.json.message.text }}\n{{ $json.text }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1560,
+        -520
+      ],
+      "id": "246b7a9f-bb6d-4e84-8f47-687780678445",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $('AI Agent2').item.json.output.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "46142d42-20a2-4939-9c91-42ec1d5af678",
+      "name": "Telegram1",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2380,
+        -140
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "20244ddd-0827-4232-8fe8-b10ed2a02fe7",
+      "credentials": {
+        "telegramApi": {
+          "id": "KDjFtgzHdrRXKafw",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1580,
+        -300
+      ],
+      "id": "cf8b6582-18bb-4bda-a31a-0b2c60bc3bf4",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "jAC1zztRJZZudj0b",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"name\": \"Marie\",\n  \"cultural_taste\": \"jazz, cinéma classique\",\n  \"location\": \"Bordeaux\",\n  \"children\": 2,\n  \"children_ages\": [\"2\", \"8\"],\n  \"past_event\": \"\",\n  \"age\": 40,\n  \"message\": \"\",\n  \"messages\": [{\"type\": \"user\",\"text\": \"Salut\"}, {\"type\": \"assistant\",\"text\": \"Je suis Teddy\"}]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1700,
+        -300
+      ],
+      "id": "67c1e4f1-3d16-4fc2-b52b-ec3b44432404",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "tableId": "users",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "id",
+              "fieldValue": "={{ $('Listen for incoming events').item.json.message.from.id }}"
+            },
+            {
+              "fieldId": "name",
+              "fieldValue": "={{ $('Listen for incoming events').item.json.message.chat.first_name }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        460,
+        -840
+      ],
+      "id": "cedfe58d-7789-4f4d-9688-844487a53400",
+      "name": "Supabase_users1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "CG288UHpoSugFCwK",
+          "name": "Supabase account Fomono"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "52f3a3b6-3b7c-4b58-8762-5d1565e2cde0",
+              "leftValue": "={{$('Supabase_users').first().json}}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2e2c4746-5289-4509-94a3-8a7c03f26bf5",
+      "name": "If_user_empty",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        240,
+        -530
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "a0bf9719-4272-46f6-ab3b-eda6f7b44fd8",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.cultural_taste }}",
+              "rightValue": "false"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f39841b3-3c91-487e-9def-4a9b74ff84a3",
+      "name": "If_all_info",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2156,
+        -530
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $('AI Agent1').item.json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "4de0cce2-5001-4948-a8b8-9fa14c29ab84",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        3580,
+        -920
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "2aaaa6b7-85a8-42f6-aa02-6a375c634b27",
+      "credentials": {
+        "telegramApi": {
+          "id": "KDjFtgzHdrRXKafw",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Tu es un assistant nommé Teddy, spécialisé dans les suggestions de sorties culturelles.\n\nSi l'utilisateur demande une suggestion d'évènement ou d'activité, sélectionne l'évènement ou les évènements les plus pertinents à partir des données fournies, puis réponds brièvement, toujours en français, strictement selon le format Markdown adapté à Telegram suivant :\n\nOk, sur la base des informations que j'ai, voici des évènements qui devraient te plaire :\n\n[🎭 Le 20 Avril à 18H - Théâtre “Intra Muros” A.Michalik](https://theatreintramuros.com/programmation/avril)  \n📍 Quartier Graslin  \n👨‍👩‍👧‍👦 Public : Tout public | ⏱ Durée : 2h30  \n📝 Description : une phrase  \n💶 Gratuit\n\n[🖼 Le 21 Avril toute la journée - Exposition “les vrais visages”](https://sortiretbouger.com/2332873)  \n📍 Quartier Cambronne  \n🔞 Public : Adulte | ⏱ Durée : 1h  \n📝 Description : une phrase  \n💶 Payant\n\nImportant :\n\n    Utilise uniquement la syntaxe Markdown spécifique à Telegram (MarkdownV2), notamment pour rendre les titres cliquables sous forme : [🎯 Titre](URL)\n\n    Place toujours l'emoji approprié directement devant le titre cliquable.\n\n    Utilise une ligne séparée pour chaque information complémentaire (quartier, public/durée, description, tarif).\n\n    N'utilise jamais le format 'gras' classique (avec astérisques), car il n'est pas toujours supporté par Telegram. Préfère une structuration claire avec des emojis et des sauts de ligne.\n\n\nTout ce que tu sais à propos de l'utilisateur :\n{{ $('AI Agent2').item.json.output }}\n\nVoici le message utilisateur, inutile de le répéter :\n{{ $('Listen for incoming events').item.json.message.text }}\n{{ $json.text }}\n\nImagine les données d'évènement, MAIS LE DIS PAS que tu le fais, soit discret.\n\nVoici l'historique complet des derniers échanges avec l'utilisateur triés par ordre chronologique croissant (le dernier est le plus récent) :\n{{ $('AI Agent2').item.json.output.messages.toJsonString() }}\n\n\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        2880,
+        -920
+      ],
+      "id": "b0f398ed-9cd0-4b54-bffb-6bb18cb59508",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2740,
+        -600
+      ],
+      "id": "051aebf5-2fec-40ce-8c99-c547fc0acea7",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "1Sd75JhAhnxrtnkr",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2620,
+        -920
+      ],
+      "id": "0393928e-d447-4681-8fed-f5442656b4c9",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "flat_events2",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        -920
+      ],
+      "id": "5a11ee83-b1e3-44e3-bf20-ec989e9d1b42",
+      "name": "Supabase1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "CG288UHpoSugFCwK",
+          "name": "Supabase account Fomono"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').item.json.message.chat.id }}",
+        "text": "=Salut !\nJe m’appelle Teddy et je suis là pour t’aider à trouver des idées de sorties qui te plairont vraiment. Pour te proposer les événements les plus adaptés à tes goûts. J'ai donc besoin de te connaître un peu mieux ! \n\nQuels types d'évènements ou de sortie t'intéressent ? \n\n(je comprends aussi les vocaux 😉)\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "6952a658-da64-4229-8179-3952066d5fe9",
+      "name": "Telegram2",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        700,
+        -1220
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "c2f4ea37-6f53-4e62-a41b-a54dd6c15d52",
+      "credentials": {
+        "telegramApi": {
+          "id": "KDjFtgzHdrRXKafw",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "users",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Listen for incoming events').item.json.message.from.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "age",
+              "fieldValue": "={{ $json.output.age }}"
+            },
+            {
+              "fieldId": "location",
+              "fieldValue": "={{ $json.output.location }}"
+            },
+            {
+              "fieldId": "children",
+              "fieldValue": "={{ $json.output.children }}"
+            },
+            {
+              "fieldId": "cultural_taste",
+              "fieldValue": "={{ $json.output.cultural_taste }}"
+            },
+            {
+              "fieldId": "children_ages",
+              "fieldValue": "={{ $json.output.children_ages }}"
+            },
+            {
+              "fieldId": "past_events",
+              "fieldValue": "={{ $json.output.past_events }}"
+            },
+            {
+              "fieldId": "messages",
+              "fieldValue": "={{ $json.output.messages }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1940,
+        -540
+      ],
+      "id": "6585dbd9-83d7-4a05-ae16-523ae3e7312c",
+      "name": "Supabase Update",
+      "credentials": {
+        "supabaseApi": {
+          "id": "CG288UHpoSugFCwK",
+          "name": "Supabase account Fomono"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3000,
+        -620
+      ],
+      "id": "8324fd61-6287-42bc-b69b-b04fdf6b9de6",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "jAC1zztRJZZudj0b",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "users",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Listen for incoming events').item.json.message.from.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "messages",
+              "fieldValue": "={{ [... $('Supabase Update').item.json.messages, {\"type\": \"assistant\", \"text\": $json.output}] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3320,
+        -920
+      ],
+      "id": "99a2e724-5892-4e30-aed0-025cb77921be",
+      "name": "Supabase Update Assistant message",
+      "credentials": {
+        "supabaseApi": {
+          "id": "CG288UHpoSugFCwK",
+          "name": "Supabase account Fomono"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Voice File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram raw text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voice or Text": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Voice File": {
+      "main": [
+        [
+          {
+            "node": "Voice transcript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listen for incoming events": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voice transcript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram raw text message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Supabase_users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_users": {
+      "main": [
+        [
+          {
+            "node": "If_user_empty",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Supabase Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_users1": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_user_empty": {
+      "main": [
+        [
+          {
+            "node": "Supabase_users1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Voice or Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If_all_info": {
+      "main": [
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Supabase Update Assistant message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Update": {
+      "main": [
+        [
+          {
+            "node": "If_all_info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Update Assistant message": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0313cff4-8b76-4010-9223-b002b6a64fb6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4d63bcd1ec93698744d0145bad8cf2d8f0c891077144f69b89f2699dc13f9c80"
+  },
+  "id": "3t6LuhUPak9u0iZb",
+  "tags": []
+}
