@@ -5,12 +5,88 @@
 @tailwind utilities;
 
 :root {
-  --violet: #6D28D9;
-  --magenta: #DB2777;
-  --darkgray: #1F2937;
+  --violet: #A360A2;
+  --violet-dark: #231137;
+  --violet-darker: #170126;
+  --violet-light: #A284BF;
+  --violet-blue: #2F2D73;
   --offwhite: #F8FAFC;
 }
 
 body {
-  @apply font-jost bg-offwhite text-navy min-h-screen;
+  @apply font-jost bg-offwhite text-violet-dark min-h-screen;
+}
+
+.images-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.image-container {
+  position: absolute;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.image-top,
+.image-bottom {
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+
+.image-top img,
+.image-bottom img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.image-top {
+  top: 0;
+}
+
+.image-bottom {
+  bottom: 0;
+}
+
+.image-left,
+.image-right {
+  top: 0;
+  height: 100%;
+  width: auto;
+}
+
+.image-left img,
+.image-right img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+}
+
+.image-left {
+  left: 0;
+}
+
+.image-right {
+  right: 0;
+}
+
+.slide-out-top { transform: translateY(-100%); }
+.slide-out-bottom { transform: translateY(100%); }
+.slide-out-left { transform: translateX(-100%); }
+.slide-out-right { transform: translateX(100%); }
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+@keyframes ellipsis {
+  0%, 100% { content: '.'; }
+  33% { content: '..'; }
+  66% { content: '...'; }
 }

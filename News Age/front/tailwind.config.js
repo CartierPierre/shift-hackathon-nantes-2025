@@ -7,11 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'navy': '#1F2937',
-        'violet': '#6D28D9',
-        'magenta': '#DB2777',
-        'darkgray': '#1F2937',
-        'offwhite': '#F8FAFC',
+        'violet': {
+          DEFAULT: '#A360A2',
+          dark: '#231137',
+          darker: '#170126',
+          light: '#A284BF',
+          blue: '#2F2D73'
+        },
+        'offwhite': '#F8FAFC'
       },
       fontFamily: {
         'jost': ['Jost', 'sans-serif'],

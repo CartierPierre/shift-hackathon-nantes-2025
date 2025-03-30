@@ -68,7 +68,6 @@ function SourceModal({ isOpen, onClose, onSave, source = null }) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent"
-                required
               />
             </div>
 
@@ -99,7 +98,7 @@ function SourceModal({ isOpen, onClose, onSave, source = null }) {
 
             <button
               type="submit"
-              className="w-full bg-violet text-white px-4 py-2 rounded-lg hover:bg-violet-600 transition"
+              className="w-full bg-violet-dark text-white px-4 py-2 rounded-lg hover:bg-violet-darker shadow-md hover:shadow-violet/20 transition"
             >
               {source ? 'Modifier' : 'Ajouter'}
             </button>
