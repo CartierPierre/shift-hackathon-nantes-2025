@@ -1,0 +1,19 @@
+meta {
+  name: get_rhese
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:5000/api/get_rhese
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {"text": "Le soleil brille et les oiseaux chantent. Espérons que la tempête ne va pas venir bientôt."}
+}

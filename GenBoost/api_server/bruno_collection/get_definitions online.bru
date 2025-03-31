@@ -1,0 +1,19 @@
+meta {
+  name: get_definitions online
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://nsgenboostapiserverdzy6vfrt-container-vibrant-newton.functions.fnc.fr-par.scw.cloud/api/get_definitions
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {"text": "Le bucheron part dans la forêt pour aller couper un hêtre."}
+}

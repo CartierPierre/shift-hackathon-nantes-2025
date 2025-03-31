@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-xl shadow-soft transition-all duration-200;
+  }
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary/90;
+  }
+  .input {
+    @apply w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none;
+  }
+}
+
+/* Base styles */
+body {
+  @apply m-0 min-h-screen bg-gray-50 text-gray-900;
+}
+
+#app {
+  @apply min-h-screen;
+}
+
+
+.container-fixed-size {
+  width: 1366px;
+  height: 1024px;
+  margin: 0 auto;
+  overflow: auto;
+}

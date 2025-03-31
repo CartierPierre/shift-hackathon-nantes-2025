@@ -1,0 +1,219 @@
+{
+    "persons": [
+      {
+        "id": 1,
+        "name": "Paul",
+        "surname": "Dupont",
+        "birthdate": "1980-05-15",
+        "description": "Fils de Monique, il a toujours été très proche de sa mère.",
+        "annecdotes": [
+          "Monique a toujours préparé le meilleur gâteau au chocolat pour mon anniversaire.",
+          "Je me souviens de nos pique-niques dans le parc, elle apportait toujours des sandwiches faits maison.",
+          "Elle m'a appris à faire du vélo dans le jardin, j'étais si fier de ne plus tomber.",
+          "Chaque Noël, elle décorait la maison avec tant de soin, c'était magique.",
+          "Monique chantait toujours des chansons anciennes pendant nos promenades.",
+          "Elle m'a appris à jouer aux cartes, et je n'ai jamais réussi à la battre.",
+          "Quand j'étais malade, elle restait à mes côtés toute la nuit.",
+          "Elle m'a encouragé à poursuivre mes études, même quand j'avais des doutes.",
+          "Nous avons fait un voyage ensemble à la mer, elle a pris des centaines de photos.",
+          "Elle m'a toujours dit que l'amour et la famille étaient les plus importants."
+        ],
+        "profile_picture_url": "../api/assets/Monique/pierre-pp.png",
+        "relationship_type": "family",
+        "relationship": "fils"
+      },
+      {
+        "id": 2,
+        "name": "Carole",
+        "surname": "Martin",
+        "birthdate": "1985-03-22",
+        "description": "Belle-fille de Monique, elle a toujours été accueillie avec chaleur par sa belle-mère.",
+        "annecdotes": [
+          "Monique m'a appris à cuisiner des plats traditionnels de la famille.",
+          "Elle a toujours été là pour me donner des conseils sur la maternité.",
+          "Je me souviens de nos soirées à tricoter ensemble, elle était si patiente.",
+          "Elle m'a fait découvrir son amour pour la musique classique, et maintenant j'adore ça.",
+          "Monique a toujours été la première à applaudir mes réussites professionnelles.",
+          "Nous avons partagé de nombreuses rires en regardant des vieilles comédies ensemble.",
+          "Elle m'a raconté des histoires de son enfance, c'était fascinant.",
+          "Elle a toujours été un soutien inconditionnel pendant les moments difficiles.",
+          "Monique m'a encouragée à me lancer dans des projets créatifs, elle croyait en moi.",
+          "Nous avons organisé un grand repas de famille pour son anniversaire, elle était si heureuse."
+        ],
+        "profile_picture_url": "../api/assets/Monique/carole-pp.png",
+        "relationship_type": "family",
+        "relationship": "belle-fille"
+      },
+      {
+        "id": 3,
+        "name": "Thibault",
+        "surname": "Dupont",
+        "birthdate": "2010-07-30",
+        "description": "Petit-fils de Monique, il adore passer du temps avec sa grand-mère.",
+        "annecdotes": [
+          "Monique me racontait des histoires de fées avant de dormir.",
+          "Nous avons fait un jardin ensemble, elle m'a appris à planter des fleurs.",
+          "Elle m'a appris à jouer aux échecs, même si je ne gagnais jamais.",
+          "Chaque été, nous allions à la plage, elle m'a appris à nager.",
+          "Monique m'a fait découvrir le plaisir de lire des livres ensemble.",
+          "Elle m'a toujours encouragé à dessiner, et elle gardait tous mes dessins.",
+          "Nous avons fait des biscuits ensemble pour Noël, c'était un vrai désastre mais tellement amusant.",
+          "Elle me racontait des blagues qui me faisaient rire aux éclats.",
+          "Nous avons regardé des films de Disney, elle chantait toujours les chansons.",
+          "Elle m'a appris à faire du vélo, et elle était si fière de moi."
+        ],
+        "profile_picture_url": "../api/assets/Monique/thibault-pp.png",
+        "relationship_type": "family",
+        "relationship": "petit-fils"
+      },
+      {
+        "id": 4,
+        "name": "Céleste",
+        "surname": "Dupont",
+        "birthdate": "2012-11-12",
+        "description": "Petite-fille de Monique, elle adore passer du temps avec sa grand-mère.",
+        "annecdotes": [
+          "Monique m'a appris à faire des bracelets en perles, c'était tellement amusant.",
+          "Nous avons fait des chasses au trésor dans le jardin, elle était la meilleure organisatrice.",
+          "Elle m'a raconté des histoires de son enfance, c'était comme un voyage dans le temps.",
+          "Chaque dimanche, nous faisions des gâteaux ensemble, elle était toujours si joyeuse.",
+          "Monique m'a appris à jouer du piano, même si je faisais des fausses notes.",
+          "Elle m'a emmenée au théâtre, c'était une expérience incroyable.",
+          "Nous avons décoré la maison pour Halloween ensemble, elle était si créative.",
+          "Elle me racontait des histoires de princesses et de dragons, j'étais fascinée.",
+          "Monique a toujours été là pour me consoler quand j'étais triste.",
+          "Elle m'a appris à apprécier la nature, nous faisions des promenades dans le parc."
+        ],
+        "profile_picture_url": "../api/assets/Monique/celeste-pp.png",
+        "relationship_type": "family",
+        "relationship": "petite-fille"
+      },
+      {
+        "id": 5,
+        "name": "Lucien",
+        "surname": "Dupont",
+        "birthdate": "1948-09-10",
+        "description": "Frère de Monique, il a toujours été un soutien pour elle.",
+        "annecdotes": [
+          "Je me souviens de nos jeux d'enfance, elle était toujours la plus imaginative.",
+          "Monique m'a aidé à surmonter des moments difficiles dans ma vie.",
+          "Nous avons partagé de nombreux repas de famille, elle était la meilleure cuisinière.",
+          "Elle m'a toujours encouragé à poursuivre mes passions, même quand c'était difficile.",
+          "Nous avons fait un voyage ensemble en camping, c'était une aventure mémorable.",
+          "Elle m'a appris à danser, même si je n'étais pas très bon.",
+          "Nous avons partagé des rires en regardant des vieilles photos de famille.",
+          "Elle a toujours été là pour écouter mes soucis, c'était une oreille attentive.",
+          "Nous avons célébré de nombreux anniversaires ensemble, elle adorait faire la fête.",
+          "Monique m'a toujours dit que la famille était la chose la plus précieuse."
+        ],
+        "profile_picture_url": "../api/assets/Monique/lucien-pp.png",
+        "relationship_type": "family",
+        "relationship": "frère"
+      },
+      {
+        "id": 6,
+        "name": "Pierre",
+        "surname": "Dupont",
+        "birthdate": "1945-06-20",
+        "description": "Mari de Monique, ils ont partagé une vie pleine d'amour et de complicité.",
+        "annecdotes": [
+          "Nous avons dansé ensemble lors de notre mariage, c'était un moment magique.",
+          "Monique a toujours été ma meilleure amie, je lui confiais tout.",
+          "Nous avons voyagé ensemble à travers le monde, chaque voyage était une nouvelle aventure.",
+          "Elle était la meilleure cuisinière, je n'ai jamais goûté de plats aussi délicieux.",
+          "Nous avons élevé nos enfants avec tant d'amour, elle était une mère incroyable.",
+          "Je me souviens de nos soirées à discuter sous les étoiles, c'était romantique.",
+          "Monique m'a toujours soutenu dans mes projets, elle croyait en moi.",
+          "Nous avons partagé des rires et des larmes, chaque moment était précieux.",
+          "Elle m'a appris à apprécier les petites choses de la vie, comme un bon café.",
+          "Nous avons célébré nos 50 ans de mariage, un moment inoubliable."
+        ],
+        "profile_picture_url": "../api/assets/Monique/pierre-pp.png",
+        "relationship_type": "family",
+        "relationship": "mari"
+      }
+    ],
+    "events": [
+      {
+        "id": 1,
+        "name": "Anniversaire de Pierre",
+        "date": "2023-05-15",
+        "description": "Célébration des 43 ans de Pierre avec toute la famille.",
+        "annecdotes": [
+          "Monique a préparé son gâteau au chocolat préféré pour l'occasion.",
+          "Tout le monde a chanté 'Joyeux Anniversaire' avec enthousiasme.",
+          "Pierre a reçu un cadeau surprise de sa mère, un album photo de son enfance.",
+          "Nous avons joué à des jeux de société, Monique était la championne.",
+          "Elle a partagé des histoires drôles de l'enfance de Pierre.",
+          "Les rires ont résonné dans la maison, créant une ambiance chaleureuse.",
+          "Monique a dansé avec Pierre sur une chanson de leur époque.",
+          "Elle a pris des photos de chaque moment, capturant la joie de la journée.",
+          "Nous avons fait un toast en l'honneur de Pierre, c'était émouvant.",
+          "Monique a dit à Pierre combien elle était fière de lui."
+        ],
+        "person_id": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Mariage de Lucas",
+        "date": "2023-09-30",
+        "description": "Célébration du mariage de Lucas avec sa fiancée dans un cadre magnifique.",
+        "annecdotes": [
+          "Monique était radieuse dans sa robe, elle a ému tout le monde.",
+          "Elle a aidé à organiser la cérémonie, chaque détail était parfait.",
+          "Lucas a dansé avec sa grand-mère sur une chanson spéciale, c'était touchant.",
+          "Monique a partagé des conseils de mariage avec le couple, pleine de sagesse.",
+          "Elle a pris des photos avec tous les invités, capturant des sourires.",
+          "Les discours ont fait pleurer Monique de joie, elle était si fière.",
+          "Elle a préparé un discours émouvant pour Lucas et sa fiancée.",
+          "Nous avons tous dansé ensemble, Monique était au centre de l'attention.",
+          "Elle a partagé des anecdotes sur son propre mariage, c'était inspirant.",
+          "La journée s'est terminée par un feu d'artifice, Monique était émerveillée."
+        ],
+        "person_id": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "images": [
+        {
+            "id": 7,
+            "title": "Mariage de Thibault",
+            "description": "Photo de Thibault lors de son mariage, avec sa soeur Céleste et ses parents, Paul et Carole.",
+            "date": "2023-09-30",
+            "person_id": [3, 4, 1, 2],
+            "event_id": 2,
+            "url": "../api/assets/Monique/photo_marriage.png"
+        },
+        {
+            "id": 8,
+            "title": "Mariage de Thibault",
+            "description": "Photo de Thibault et son père, Paul, lors de son mariage.",
+            "date": "2023-09-30",
+            "person_id": [3, 1],
+            "event_id": 2,
+            "url": "../api/assets/Monique/photo_marriage2.png"
+        },
+        {
+            "id": 9,
+            "title": "Mariage de Thibault",
+            "description": "Photo de Thibault avec sa famille, lors de son mariage.",
+            "date": "2023-09-30",
+            "person_id": [3, 4, 1, 2],
+            "event_id": 2,
+            "url": "../api/assets/Monique/photo_marriage3.png"
+        }
+    ]
+}

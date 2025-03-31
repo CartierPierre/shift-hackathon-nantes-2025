@@ -1,0 +1,7 @@
+fastapi[standard]
+elevenlabs
+uvicorn[standard]
+elevenlabs
+langchain
+langchain-mistralai
+langchain-openai

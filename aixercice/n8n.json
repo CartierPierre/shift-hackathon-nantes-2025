@@ -1,0 +1,682 @@
+{
+  "name": "Backend AI Exercice",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "091cf9db-07c7-4db6-901c-624ac2552bdf",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        -200
+      ],
+      "id": "28dcd8af-467f-45b7-892d-361194077b00",
+      "name": "Webhook",
+      "webhookId": "091cf9db-07c7-4db6-901c-624ac2552bdf"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1080,
+        -240
+      ],
+      "id": "a2381275-00ba-4ac2-ac6b-f1fa57cdfbee",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.type }}",
+                    "rightValue": "string",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ace43556-0c04-4726-95bc-ac4f2f423a19"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ba9aa40f-0f2d-4a9f-95e5-917c9da95eda",
+                    "leftValue": "={{ $json.body.type }}",
+                    "rightValue": "voice",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voix"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -360,
+        -200
+      ],
+      "id": "fff777b5-f42c-4481-9cf6-a1b1ecdc317c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"test_response\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"form\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"form\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"question\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'intitulé de la question\"\n                },\n                \"statement\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'énoncé de la question\"\n                },\n                \"type\": {\n                  \"type\": \"string\",\n                  \"enum\": [\n                    \"multiple_choice\"\n                  ],\n                  \"description\": \"Type de question\"\n                },\n                \"answers\": {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"type\": \"object\",\n                    \"additionalProperties\": false,\n                    \"properties\": {\n                      \"text\": {\n                        \"type\": \"string\",\n                        \"description\": \"Texte de la réponse\"\n                      },\n                      \"correct\": {\n                        \"type\": \"boolean\",\n                        \"description\": \"Indique si la réponse est correcte\"\n                      },\n                      \"position\": {\n                        \"type\": \"integer\",\n                        \"description\": \"Position de la réponse dans la liste\"\n                      }\n                    },\n                    \"required\": [\n                      \"text\",\n                      \"correct\",\n                      \"position\"\n                    ]\n                  }\n                }\n              },\n              \"required\": [\n                \"question\",\n                \"type\",\n                \"answers\"\n              ]\n            }\n          }\n        }\n      }\n    }\n  }"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        -320
+      ],
+      "id": "d731bd14-998f-4029-893f-1d269da7507e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "=  Peux tu me générer une illustration, sans aucun texte, en 400 pixel x 400 pixel pour représenter la compétence à valider : {{ $json.query.skill_to_validate }}",
+        "options": {
+          "quality": "standard",
+          "size": "1024x1024",
+          "returnImageUrls": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -120,
+        -680
+      ],
+      "id": "01d92e84-547b-498c-8c7d-65ccc43b6bb0",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "wztwctp9LJHurLVX",
+          "name": "OpenAi AIExercice"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1320,
+        300
+      ],
+      "id": "252b365d-a41b-4868-9745-04a61ba103bd",
+      "name": "Loop Over Items",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        520
+      ],
+      "id": "a8b40c11-f2d5-4eb9-a68a-f9ddc1a9bd1f",
+      "name": "Edit Fields",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1860,
+        520
+      ],
+      "id": "2acbbd02-d4ff-4149-97de-7305d0409afe",
+      "name": "Convert to File",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer XXXXX"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o\",\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"test_response\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"form\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"form\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"question\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'intitulé de la question\"\n                },\n                \"type\": {\n                  \"type\": \"string\",\n                  \"enum\": [\n                    \"multiple_choice\",\n                    \"fill_in_the_blanks\",\n                    \"drag_the_words\"\n                  ],\n                  \"description\": \"Type de question\"\n                },\n                \"answers\": {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"type\": \"object\",\n                    \"additionalProperties\": false,\n                    \"properties\": {\n                      \"text\": {\n                        \"type\": \"string\",\n                        \"description\": \"Texte de la réponse\"\n                      },\n                      \"correct\": {\n                        \"type\": \"boolean\",\n                        \"description\": \"Indique si la réponse est correcte\"\n                      },\n                      \"position\": {\n                        \"type\": \"integer\",\n                        \"description\": \"Position de la réponse dans la liste\"\n                      }\n                    },\n                    \"required\": [\n                      \"text\",\n                      \"correct\",\n                      \"position\"\n                    ]\n                  }\n                }\n              },\n              \"required\": [\n                \"question\",\n                \"type\",\n                \"answers\"\n              ]\n            }\n          }\n        }\n      }\n    }\n  },\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Tu es un concepteur pédagogique expert en {{ $('Webhook').item.json.body.skill_to_validate }}. Ta mission est de créer 5 exercices engageants et concrets pour des collégiens et lycéens, en ancrant l'apprentissage dans leur vécu quotidien. AUDIENCE Ces exercices s'adressent à des collégiens et lycéens ayant besoin d'une approche personnalisée pour mieux comprendre et appliquer les notions du programme de français.FORMAT Chaque exercice doit suivre cette structure : 1. Notion travaillée : (ex: figures de style, registres littéraires, schéma narratif) 2. Contexte personnalisé : Basé sur les informations fournies sur l'élève 3. Énoncé précis : Demande explicite d'application de la notion Types d'exercices : - QCM (multiple_choice)- Phrases à compléter (fill_in_the_blanks) - Glisser-déposer (drag_the_words) TON Adopte un ton pédagogique, clair et engageant pour stimuler la motivation et la curiosité de l'élève. SORTIE ATTENDUE Fournir une liste de 5 exercices au format JSON avec les propriétés suivantes pour chacun : Propriétés communes : - type : multiple_choice, fill_in_the_blanks ou drag_the_words - notion : La notion travaillée - contexte : Contexte personnalisé basé sur les données de l'élève - enonce : Énoncé précis de l'exercice - question : La question de l'exercice Propriétés spécifiques : - Pour multiple_choice : - choix : Array des options de réponse - reponse_correcte : La bonne réponse - Pour fill_in_the_blanks : - texte : Le texte avec des espaces à remplir (utiliser $$$ pour les trous) - reponses : Array des mots manquants dans l'ordre - Pour drag_the_words : - texte : Le texte avec des espaces pour les mots à placer (utiliser $$$ pour les trous) - mots : Array des mots à placer avec leur position (ex: {mot: exemple, position: 1}) CONTRAINTES - Varier les types d'exercices (au moins un de chaque type) - Mettre au moins 3 mots à placer dans les exercices drag_the_words - Adapter le contenu au niveau scolaire et aux centres d'intérêt de l'élève - Lorsque l'exercice parle de l'élève, utilise la première personne du singulier- Assurer une progression logique dans la difficulté des exercices - Inclure des éléments de gamification pour rendre l'apprentissage plus ludique\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Voici mon contexte d'élève : {{ $('Webhook').item.json.body.student_context }} Donne-moi 5 questions\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        -180
+      ],
+      "id": "c66844ce-2e0a-4fd0-bf2d-d0fef5aef3d3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1640,
+        520
+      ],
+      "id": "222a77dc-dba4-4316-b71b-1dff54e2b109",
+      "name": "Code",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "path": "091cf9db-07c7-4db6-901c-624ac2552bde",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -520,
+        -680
+      ],
+      "id": "164d35bb-73ad-4932-aadf-2f64cd546e90",
+      "name": "Webhook1",
+      "webhookId": "091cf9db-07c7-4db6-901c-624ac2552bdf"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        300,
+        -680
+      ],
+      "id": "76c764ae-6fdc-4010-9908-5bf34e111014",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer XXXX"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o\",\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"test_response\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"form\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"form\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"question\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'intitulé de la question\"\n                },\n                \"type\": {\n                  \"type\": \"string\",\n                  \"enum\": [\n                    \"multiple_choice\",\n                    \"fill_in_the_blanks\",\n                    \"drag_the_words\"\n                  ],\n                  \"description\": \"Type de question\"\n                },\n                \"answers\": {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"type\": \"object\",\n                    \"additionalProperties\": false,\n                    \"properties\": {\n                      \"text\": {\n                        \"type\": \"string\",\n                        \"description\": \"Texte de la réponse\"\n                      },\n                      \"correct\": {\n                        \"type\": \"boolean\",\n                        \"description\": \"Indique si la réponse est correcte\"\n                      },\n                      \"position\": {\n                        \"type\": \"integer\",\n                        \"description\": \"Position de la réponse dans la liste\"\n                      }\n                    },\n                    \"required\": [\n                      \"text\",\n                      \"correct\",\n                      \"position\"\n                    ]\n                  }\n                }\n              },\n              \"required\": [\n                \"question\",\n                \"type\",\n                \"answers\"\n              ]\n            }\n          }\n        }\n      }\n    }\n  },\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Tu es un concepteur pédagogique expert en {{ $('Webhook').item.json.body.skill_to_validate }}. Ta mission est de créer 5 exercices engageants et concrets pour des collégiens et lycéens, en ancrant l'apprentissage dans leur vécu quotidien. AUDIENCE Ces exercices s'adressent à des collégiens et lycéens ayant besoin d'une approche personnalisée pour mieux comprendre et appliquer les notions du programme de français.FORMAT Chaque exercice doit suivre cette structure : 1. Notion travaillée : (ex: figures de style, registres littéraires, schéma narratif) 2. Contexte personnalisé : Basé sur les informations fournies sur l'élève 3. Énoncé précis : Demande explicite d'application de la notion Types d'exercices : - QCM (multiple_choice)- Phrases à compléter (fill_in_the_blanks) - Glisser-déposer (drag_the_words) TON Adopte un ton pédagogique, clair et engageant pour stimuler la motivation et la curiosité de l'élève. SORTIE ATTENDUE Fournir une liste de 5 exercices au format JSON avec les propriétés suivantes pour chacun : Propriétés communes : - type : multiple_choice, fill_in_the_blanks ou drag_the_words - notion : La notion travaillée - contexte : Contexte personnalisé basé sur les données de l'élève - enonce : Énoncé précis de l'exercice - question : La question de l'exercice Propriétés spécifiques : - Pour multiple_choice : - choix : Array des options de réponse - reponse_correcte : La bonne réponse - Pour fill_in_the_blanks : - texte : Le texte avec des espaces à remplir (utiliser $$$ pour les trous) - reponses : Array des mots manquants dans l'ordre - Pour drag_the_words : - texte : Le texte avec des espaces pour les mots à placer (utiliser $$$ pour les trous) - mots : Array des mots à placer avec leur position (ex: {mot: exemple, position: 1}) CONTRAINTES - Varier les types d'exercices (au moins un de chaque type) - Mettre au moins 3 mots à placer dans les exercices drag_the_words - Adapter le contenu au niveau scolaire et aux centres d'intérêt de l'élève - Lorsque l'exercice parle de l'élève, utilise la première personne du singulier- Assurer une progression logique dans la difficulté des exercices - Inclure des éléments de gamification pour rendre l'apprentissage plus ludique\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Voici mon contexte d'élève : {{ $('Webhook').item.json.body.student_context }} Donne-moi 5 questions\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1420,
+        -380
+      ],
+      "id": "74793c3c-3586-442f-bcdb-f37f5aa9e3d2",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        -280
+      ],
+      "id": "a01f38bd-8751-4bcf-83b0-341bf21e0754",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "wztwctp9LJHurLVX",
+          "name": "OpenAi AIExercice"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=My CONTEXTE : {{ $('Webhook').item.json.body.student_context }}\n\nMY SKILL :{{ $('Webhook').item.json.body.skill_to_validate }}\n\n\nGive me 2 questions (strict)",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a creative and empathetic teacher. Your goal is to generate engaging grammar exercises for students, by anchoring each activity in relatable, real-life contexts based on their interests and environment.\n\nEach exercise must be:\n\n1. **Personalized**: The *statement* should immerse the student in a concrete situation, as if it were part of their own life. Use first or second person (\"You\") and include personalized elements from the provided context.\n2. **Focused on a skill**: Use the provided skill description (e.g. “Collège, Classe de 6ème, Français, Conjugaison, Le verbe, les trois groupes verbaux”) to create targeted practice.\n3. **Interactive**: Use the \"multiple_choice\" format to build fill-in-the-blank style sentences with unique answer for each field.\n\n# Output Format\n\nRespond with a JSON object following this structure:\n\n\njson\n{\n  \"questions\": [                               \n    {\n      \"question\": \"string\",\n      \"statement\" : \"string\",\n      \"type\": \"multiple_choice\",          \n      \"answers\": [              \n        {\n          \"text\": \"string\",            \n          \"correct\": \"boolean\",            \n          \"position\": \"integer\"           \n        }\n      ]\n    }\n  ]\n}\n\n## Guidelines\n\nstatement: Give a short, vivid situation the student can identify with. Always written in second person (\"You\").\n\nquestion: A sentence or short paragraph.\n\ntype: Always set to \"multiple_choice\".\n\nanswers: A list of words (both correct and distractors). Distractors have correct: false and may reuse incorrect forms of the same verb or other group conjugations\n\nnumber of choices (words) : between 4 et 6.\n\n*Notes*: All answers should be in French."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        240,
+        -500
+      ],
+      "id": "fe91e6a9-9009-4c51-bffc-8d7a988ce130",
+      "name": "AI Agent - MultiChoices"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"test_response\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"form\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"form\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"question\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'intitulé de la question\"\n                },\n                \"statement\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'énoncé de la question\"\n                },\n                \"type\": {\n                  \"type\": \"string\",\n                  \"enum\": [\n                    \"drag_the_words\"\n                  ],\n                  \"description\": \"Type de question\"\n                },\n                \"answers\": {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"type\": \"object\",\n                    \"additionalProperties\": false,\n                    \"properties\": {\n                      \"text\": {\n                        \"type\": \"string\",\n                        \"description\": \"Texte de la réponse\"\n                      },\n                      \"correct\": {\n                        \"type\": \"boolean\",\n                        \"description\": \"Indique si la réponse est correcte\"\n                      },\n                      \"position\": {\n                        \"type\": \"integer\",\n                        \"description\": \"Position de la réponse dans la liste\"\n                      }\n                    },\n                    \"required\": [\n                      \"text\",\n                      \"correct\",\n                      \"position\"\n                    ]\n                  }\n                }\n              },\n              \"required\": [\n                \"question\",\n                \"type\",\n                \"answers\"\n              ]\n            }\n          }\n        }\n      }\n    }\n  }"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        460,
+        20
+      ],
+      "id": "b9b0f647-fd0e-4012-95f7-b1c04eea9f4f",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        0
+      ],
+      "id": "6cc3f009-0362-4648-8e63-efa633519e27",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "wztwctp9LJHurLVX",
+          "name": "OpenAi AIExercice"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"test_response\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"form\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"form\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"question\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'intitulé de la question\"\n                },\n                \"statement\": {\n                  \"type\": \"string\",\n                  \"description\": \"L'énoncé de la question\"\n                },\n                \"type\": {\n                  \"type\": \"string\",\n                  \"enum\": [\n                    \"fill_in_the_blanks\"\n                  ],\n                  \"description\": \"Type de question\"\n                },\n                \"answers\": {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"type\": \"object\",\n                    \"additionalProperties\": false,\n                    \"properties\": {\n                      \"text\": {\n                        \"type\": \"string\",\n                        \"description\": \"Texte de la réponse\"\n                      },\n                      \"correct\": {\n                        \"type\": \"boolean\",\n                        \"description\": \"Indique si la réponse est correcte\"\n                      },\n                      \"position\": {\n                        \"type\": \"integer\",\n                        \"description\": \"Position de la réponse dans la liste\"\n                      }\n                    },\n                    \"required\": [\n                      \"text\",\n                      \"correct\",\n                      \"position\"\n                    ]\n                  }\n                }\n              },\n              \"required\": [\n                \"question\",\n                \"type\",\n                \"answers\"\n              ]\n            }\n          }\n        }\n      }\n    }\n  }"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        460,
+        340
+      ],
+      "id": "0b410c97-448d-4216-8f7a-eb316bdbff7a",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        340
+      ],
+      "id": "193d3352-8bde-4e22-b1e4-fb4c977848aa",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "wztwctp9LJHurLVX",
+          "name": "OpenAi AIExercice"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=My CONTEXTE : {{ $('Webhook').item.json.body.student_context }}\n\nMY SKILL :{{ $('Webhook').item.json.body.skill_to_validate }}\n\n\nGive me 2 questions (strict)",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a creative and empathetic teacher. Your goal is to generate engaging grammar exercises for students, by anchoring each activity in relatable, real-life contexts based on their interests and environment.\n\nEach exercise must be:\n\n1. **Personalized**: The *statement* should immerse the student in a concrete situation, as if it were part of their own life. Use first or second person (\"You\") and include personalized elements from the provided context.\n2. **Focused on a skill**: Use the provided skill description (e.g. “Collège, Classe de 6ème, Français, Conjugaison, Le verbe, les trois groupes verbaux”) to create targeted practice.\n3. **Interactive**: Use the \"fill_in_the_blank\" format to build fill-in-the-blank style sentences with unique answer for each field.\n\n# Output Format\n\nRespond with a JSON object following this structure:\n\n\njson\n{\n  \"questions\": [                               \n    {\n      \"question\": \"string\",\n      \"statement\" : \"string\",\n      \"type\": \"drag_the_words\",          \n      \"answers\": [              \n        {\n          \"text\": \"string\",            \n          \"correct\": \"boolean\",            \n          \"position\": \"integer\"           \n        }\n      ]\n    }\n  ]\n}\n\n## Guidelines\n\nstatement: Give a short, vivid situation the student can identify with. Always written in second person (\"You\").\n\nquestion: A sentence or short paragraph with multiple blanks marked by $$$ and positions (1, 2, 3...).\n\ntype: Always set to \"drag_the_words\".\n\nanswers: A list of words (both correct and distractors). Each correct word is linked to the right position using the position field. Distractors have correct: false and may reuse incorrect forms of the same verb or other group conjugations\n\nnumber of words (words) : less than twice the number of blanks\n\n*Exercices examples*: \n### Exercise 1: The superstar cat 🐱\n\n**Context**\nYou've just posted a video of your cat Luna on Instagram, jumping up to catch a ball. In just a few hours, it's already been seen over 3,000 times by your friends!\n\n**Question**\nThis morning, you $$$ your favorite Luna video. Luna $$$ in the air and $$$ the ball like a real acrobat. Since then, the likes $$$ without stopping!\n\n**Suggested choices**  \n- A. shared - ✅ 1  \n- B. jump - ✅ 2  \n- C. jump - ❌  \n- D. catch - ✅ 3  \n- E. catch - ❌  \n- F. rain - ✅ 4  \n- G. rained - ❌  \n- H. were sharing - ❌  \n\n### Exercise 2: An adventure at Hogwarts ⚡\n\n**Context**\nYou imagine you're a student at Hogwarts, in the house of Gryffindor. With your friend Emma, you attend a wizarding class. Wands at the ready!\n\n**Question (fill in the blank)**\nIn the Great Hall, you $$$ your wands. Professor Flitwick $$$ a new spell. All students $$$ carefully, then $$$ to repeat it.\n\n**Suggested choices**\n- A. take - ✅ 1  \n- B. took - ❌  \n- C. explain - ✅ 2  \n- D. explains - ❌  \n- E. listen - ✅ 3  \n- F. listen - ❌  \n- G. begin - ✅ 4  \n- H. begin - ❌  \n\n### Exercise 3: The theater outing 🎭\n\n**Context**\nLast Friday, your class went to see a play at Le Lieu Unique, in Nantes. It was a modern version of *The Little Prince*, with futuristic lighting effects.\n\n**Question**\nBefore the play, you $$$ in the hall. You $$$ an illuminated poster of a fox. When the play $$$, everyone $$$ in silence.\n\n**Suggested choices**\n- A. wait - ✅ 1  \n- B. waited - ❌  \n- C. notice - ✅ 2  \n- D. notice - ❌  \n- E. begin - ✅ 3  \n- F. begin - ❌  \n- G. listen - ❌  \n- H. listen - ✅ 4  \n\n*Notes*: All answers should be in French."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        240,
+        -160
+      ],
+      "id": "748e7162-04c6-4698-a927-45d5b2f08ad3",
+      "name": "AI Agent - Drag_The_Words"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        780,
+        -240
+      ],
+      "id": "6a7c75f6-bd02-4ff6-9cb3-0c341d214d50",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=My CONTEXTE : {{ $('Webhook').item.json.body.student_context }}\n\nMY SKILL :{{ $('Webhook').item.json.body.skill_to_validate }}\n\n\nGive me 2 questions (strict)",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a creative and empathetic teacher. Your goal is to generate engaging grammar exercises for students, by anchoring each activity in relatable, real-life contexts based on their interests and environment.\n\nEach exercise must be:\n\n1. **Personalized**: The *statement* should immerse the student in a concrete situation, as if it were part of their own life. Use first or second person (\"You\") and include personalized elements from the provided context.\n2. **Focused on a skill**: Use the provided skill description (e.g. “Collège, Classe de 6ème, Français, Conjugaison, Le verbe, les trois groupes verbaux”) to create targeted practice.\n3. **Interactive**: Use the \"fill_in_the_blank\" format to build fill-in-the-blank style sentences with unique answer for each field.\n\n# Output Format\n\nRespond with a JSON object following this structure:\n\n\njson\n{\n  \"questions\": [                               \n    {\n      \"question\": \"string\",\n      \"statement\" : \"string\",\n      \"type\": \"fill_in_the_blank\",          \n      \"answers\": [              \n        {\n          \"text\": \"string\",            \n          \"correct\": \"boolean\",\n          \"placeholder\": \"string\",\n          \"position\": \"integer\"           \n        }\n      ]\n    }\n  ]\n}\n\n## Guidelines\n\nstatement: Give a short, vivid situation the student can identify with. Always written in second person (\"You\").\n\nquestion: A sentence or short paragraph with multiple blanks marked by $$$ .\n\ntype: Always set to \"fill_in_the_blank\".\n\nplaceholder: a hint (one word) to help the student understand what kind of text is expected\n\n*Exercices examples*:\n### Exercise 1: The superstar cat 🐱\n\n**Context**\nYou've just posted a video of your cat Luna on Instagram, jumping up to catch a ball. In just a few hours, it's already been seen over 3,000 times by your friends!\n\n**Question**\nThis morning, you $$$ your favorite Luna video. Luna $$$ in the air and $$$ the ball like a real acrobat. Since then, the likes $$$ without stopping!\n\n**Responses**\n- shared - ✅ 1\n- jump - ✅ 2\n- catch - ✅ 3\n- rain - ✅ 4\n\n**Placeholders**\n- to share\n- to jump\n- to catch\n- to rain\n\n### Exercise 2: An adventure at Hogwarts ⚡\n\n**Context**\nYou imagine you're a student at Hogwarts, in the house of Gryffindor. With your friend Emma, you attend a wizarding class. Wands at the ready!\n\n**Question**\nIn the Great Hall, you $$$ your wands. Professor Flitwick $$$ a new spell. All students $$$ carefully, then $$$ to repeat it.\n\n**Responses**\n- take - ✅ 1\n- explain - ✅ 2\n- listen - ✅ 3\n- begin - ✅ 4\n\n**Placeholders**\n- to take\n- to explain\n- to listen\n- to begin\n\n\n### Exercise 3: The theater outing 🎭\n\n**Context**\nLast Friday, your class went to see a play at Le Lieu Unique, in Nantes. It was a modern version of *The Little Prince*, with futuristic lighting effects.\n\n**Question**\nBefore the play, you $$$ in the hall. You $$$ an illuminated poster of a fox. When the play $$$ , everyone $$$ in silence.\n\n**Responses**\n- wait - ✅ 1\n- notice - ✅ 2\n- begin - ✅ 3\n- listen - ✅ 4\n\n**Placeholders**\n- to wait\n- to notice\n- to begin\n- to listen\n\n*Notes*: All answers and texts (question, statement, placeholder,...) should be in French."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        240,
+        160
+      ],
+      "id": "476c189e-45d2-4414-abd4-95cabda3057d",
+      "name": "AI Agent - fill_in_the_blanks"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - MultiChoices",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - Drag_The_Words",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent - fill_in_the_blanks",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - MultiChoices",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - MultiChoices",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - MultiChoices": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - Drag_The_Words",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Drag_The_Words",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent - fill_in_the_blanks",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - fill_in_the_blanks",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Drag_The_Words": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - fill_in_the_blanks": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "66586a26-47b8-4779-923d-7fd648f24f7b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4e2fd19f06d692037d549533de5b18cfddeda128cebb1a760431f8147cbf93c1"
+  },
+  "id": "t9Qsot6RHr0qIWUC",
+  "tags": []
+}

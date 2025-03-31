@@ -1,0 +1,175 @@
+[
+    {
+        "matiere": "Anglais",
+        "categories": [
+            {
+                "categorie": "Grammaire - Le verbe",
+                "cours": [
+                    "Le présent simple",
+                    "Le présent en \"be + V-ing\"",
+                    "Le present perfect. \"For\" et \"since\"",
+                    "Le past perfect",
+                    "L’expression de l’avenir",
+                    "Les modaux",
+                    "\"Would\" et \"should\"",
+                    "\"Used to\" et \"would\"",
+                    "La voix passive",
+                    "\"Be\"",
+                    "\"Have\"",
+                    "Le prétérit. \"Ago\""
+                ]
+            },
+            {
+                "categorie": "Compréhension et expression",
+                "cours": [
+                    "Saluer, prendre congé, remercier",
+                    "Exprimer ses goûts, son admiration",
+                    "Souhaiter, regretter, refuser",
+                    "Formuler un reproche, se plaindre",
+                    "Exprimer la capacité, l’obligation",
+                    "Autoriser, interdire",
+                    "Conseiller, proposer",
+                    "Exprimer son accord, son désaccord",
+                    "Exprimer son opinion",
+                    "Exprimer une conviction, un doute",
+                    "Organiser ses idées",
+                    "Utiliser le mot juste",
+                    "Ne pas confondre (1)",
+                    "Ne pas confondre (2)"
+                ]
+            },
+            {
+                "categorie": "Grammaire - La phrase",
+                "cours": [
+                    "Le gérondif (forme en V-ing)",
+                    "Verbe + préposition",
+                    "Les questions en « wh- »",
+                    "Les questions en « how »",
+                    "Les « tags » et réponses brèves",
+                    "Les pronoms relatifs",
+                    "Discours direct et indirect",
+                    "La concordance des temps avec « if »",
+                    "Les adverbes",
+                    "Les mots de liaison (1)",
+                    "Les mots de liaison (2)",
+                    "L’adjectif qualificatif",
+                    "Comparatif et superlatif"
+                ]
+            },
+            {
+                "categorie": "Grammaire - Le groupe nominal",
+                "cours": [
+                    "Le pluriel des noms",
+                    "Les articles",
+                    "« Some », « any », « no » et leurs composés",
+                    "« A lot of », « much », « many », « a little », « a few »…",
+                    "Les nombres",
+                    "Les pronoms personnels et réfléchis",
+                    "Le génitif. Les possessifs"
+                ]
+            }
+        ]
+    },
+    {
+        "matiere": "Français",
+        "categories": [
+            {
+                "categorie": "Grammaire",
+                "cours": [
+                    "Le nom et ses déterminants",
+                    "Les pronoms",
+                    "L'adjectif qualificatif",
+                    "Les fonctions dans la phrase",
+                    "Les compléments circonstanciels",
+                    "Phrase simple et phrase complexe"
+                ]
+            },
+            {
+                "categorie": "Orthographe",
+                "cours": [
+                    "L'accord du verbe avec le sujet",
+                    "L'accord du participe passé",
+                    "Les accords dans le GN",
+                    "Les homophones grammaticaux",
+                    "La ponctuation, les majuscules"
+                ]
+            },
+            {
+                "categorie": "Lexique",
+                "cours": [
+                    "Le dictionnaire",
+                    "Synonyme, antonyme, homonyme, paronyme",
+                    "La forme des mots, l'étymologie",
+                    "Les niveaux de langue"
+                ]
+            },
+            {
+                "categorie": "Lire et écrire",
+                "cours": [
+                    "Commencer un récit",
+                    "Faire progresser un récit",
+                    "Employer le bon temps dans un récit au passé",
+                    "Désigner et décrire un personnage",
+                    "La poésie"
+                ]
+            },
+            {
+                "categorie": "Conjugaison",
+                "cours": [
+                    "Le verbe, les trois groupes verbaux",
+                    "Le présent",
+                    "L'imparfait et le passé simple",
+                    "Le futur simple et le conditionnel présent",
+                    "Les temps composés"
+                ]
+            }
+        ]
+    },
+    {
+        "matiere": "Mathématiques",
+        "categories": [
+            {
+                "categorie": "Nombres et calculs",
+                "cours": [
+                    "La comparaison des nombres décimaux",
+                    "Les nombres décimaux",
+                    "L'addition et la soustraction",
+                    "La multiplication",
+                    "La division",
+                    "Le quotient de deux nombres",
+                    "La proportionnalité",
+                    "Les pourcentages",
+                    "Les graphiques",
+                    "La demi-droite graduée",
+                    "Les diagrammes"
+                ]
+            },
+            {
+                "categorie": "Grandeurs et mesures",
+                "cours": [
+                    "Les durées",
+                    "Les périmètres",
+                    "Les aires",
+                    "Les angles",
+                    "Les volumes",
+                    "Longueur, masses et capacités"
+                ]
+            },
+            {
+                "categorie": "Espace et géométrie",
+                "cours": [
+                    "Prismes droits et pyramides régulières",
+                    "Les parallélépipèdes rectangles",
+                    "Les axes de symétrie de figures usuelles",
+                    "La médiatrice",
+                    "La symétrie par rapport à une droite",
+                    "Les quadrilatères",
+                    "Les triangles",
+                    "Le cercle",
+                    "Droites perpendiculaires et parallèles",
+                    "Les premiers éléments de géométrie"
+                ]
+            }
+        ]
+    }
+]

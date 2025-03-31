@@ -1,0 +1,19 @@
+meta {
+  name: get_entites
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:5000/api/get_entites
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {"text": "Lucas Suppin (né le 2 juillet 1911 à Untertauern et mort le 24 février 1998 à Salzbourg, en Autriche) est un peintre autrichien d'origine slovène. Il est issu de l'École de Paris. Il a travaillé à Salzbourg et Saint-Paul-de-Vence. Ami du peintre Picasso, du poète Jacques Prévert et du compositeur Carl Orff. C'est lui qui a mis en relation Prévert et Orff, lui aussi qui organise leur rencontre à Paris comme l'indiquent plusieurs courriers archivés au Orff Zentrum [archive] de Munich. Nous apprenons également dans ces lettres que Orff, Suppin et Prévert avaient un projet commun autour d'un livre (probablement autour du thème d'Œdipe), mais celui-ci ne s'est jamais réalisé."}
+}

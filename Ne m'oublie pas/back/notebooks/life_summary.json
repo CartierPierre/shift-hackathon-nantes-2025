@@ -1,0 +1,352 @@
+{
+  "name": "Monique",
+  "age": 75,
+  "occupation": "Ancienne Assistante sociale",
+  "memories": [
+    {
+      "person": {
+        "id": 1,
+        "name": "Marie",
+        "relationship": "Amie d'enfance",
+        "age": 74,
+        "occupation": "Retraitée",
+        "hobbies": [
+          "Jardinage",
+          "Lecture"
+        ],
+        "description": "Marie est mon amie d'enfance, nous avons grandi ensemble et partagé de nombreux moments de vie."
+      },
+      "place": [
+        "Église du village",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Joie",
+        "Nostalgie"
+      ],
+      "description": "Le mariage de Thibault était magnifique. Voir Monique si heureuse m'a rappelé tous les moments que nous avons partagés. L'église du village était décorée avec goût, et la cérémonie était très émouvante. Pendant la réception, nous avons dansé et ri comme si nous étions encore jeunes. C'était un jour inoubliable."
+    },
+    {
+      "person": {
+        "id": 2,
+        "name": "Jean",
+        "relationship": "Frère",
+        "age": 72,
+        "occupation": "Retraité",
+        "hobbies": [
+          "Pêche",
+          "Randonnée"
+        ],
+        "description": "Jean est le frère de Monique, ils ont toujours été très proches et partagent de nombreux souvenirs de famille."
+      },
+      "place": [
+        "Mairie",
+        "Jardin de la réception"
+      ],
+      "emotion": [
+        "Fierté",
+        "Émotion"
+      ],
+      "description": "Assister au mariage de Thibault était un moment très émouvant. Voir notre famille réunie pour cet événement spécial m'a rempli de fierté. La cérémonie à la mairie était solennelle, et le jardin de la réception était magnifique. J'ai ressenti beaucoup d'émotion en voyant Monique si heureuse et entourée de ses proches."
+    },
+    {
+      "person": {
+        "id": 3,
+        "name": "Sophie",
+        "relationship": "Fille",
+        "age": 50,
+        "occupation": "Professeure",
+        "hobbies": [
+          "Yoga",
+          "Cuisine"
+        ],
+        "description": "Sophie est la fille de Monique, elles partagent une relation très proche et complice."
+      },
+      "place": [
+        "Église",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Bonheur",
+        "Reconnaissance"
+      ],
+      "description": "Le mariage de Thibault était un jour rempli de bonheur. Voir ma mère si heureuse et entourée de ses proches m'a remplie de gratitude. La cérémonie à l'église était très émouvante, et la réception était joyeuse et festive. J'ai ressenti beaucoup de reconnaissance pour tous les moments partagés en famille."
+    },
+    {
+      "person": {
+        "id": 4,
+        "name": "Pierre",
+        "relationship": "Cousin",
+        "age": 68,
+        "occupation": "Ingénieur",
+        "hobbies": [
+          "Vélo",
+          "Photographie"
+        ],
+        "description": "Pierre est le cousin de Monique, ils ont partagé de nombreux moments de famille et sont très proches."
+      },
+      "place": [
+        "Église",
+        "Jardin de la réception"
+      ],
+      "emotion": [
+        "Joie",
+        "Nostalgie"
+      ],
+      "description": "Le mariage de Thibault était un moment de grande joie. Voir Monique si heureuse m'a rappelé tous les bons moments passés en famille. La cérémonie à l'église était très émouvante, et le jardin de la réception était magnifique. J'ai ressenti beaucoup de nostalgie en repensant à tous les souvenirs partagés."
+    },
+    {
+      "person": {
+        "id": 5,
+        "name": "Claire",
+        "relationship": "Amie",
+        "age": 73,
+        "occupation": "Retraitée",
+        "hobbies": [
+          "Peinture",
+          "Voyage"
+        ],
+        "description": "Claire est une amie proche de Monique, elles partagent de nombreux souvenirs et moments de vie."
+      },
+      "place": [
+        "Mairie",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Émotion",
+        "Joie"
+      ],
+      "description": "Assister au mariage de Thibault était un moment très émouvant. Voir Monique si heureuse et entourée de ses proches m'a remplie de joie. La cérémonie à la mairie était solennelle, et la réception était festive et joyeuse. J'ai ressenti beaucoup d'émotion en partageant ce moment avec elle."
+    },
+    {
+      "person": {
+        "id": 6,
+        "name": "Luc",
+        "relationship": "Beau-frère",
+        "age": 70,
+        "occupation": "Retraité",
+        "hobbies": [
+          "Golf",
+          "Lecture"
+        ],
+        "description": "Luc est le beau-frère de Monique, ils partagent une relation amicale et complice."
+      },
+      "place": [
+        "Église",
+        "Jardin de la réception"
+      ],
+      "emotion": [
+        "Bonheur",
+        "Sérénité"
+      ],
+      "description": "Le mariage de Thibault était un jour rempli de bonheur. Voir Monique si heureuse et entourée de ses proches m'a apporté beaucoup de sérénité. La cérémonie à l'église était très émouvante, et le jardin de la réception était magnifique. J'ai apprécié chaque moment passé en famille."
+    },
+    {
+      "person": {
+        "id": 7,
+        "name": "Anne",
+        "relationship": "Nièce",
+        "age": 45,
+        "occupation": "Infirmière",
+        "hobbies": [
+          "Randonnée",
+          "Cuisine"
+        ],
+        "description": "Anne est la nièce de Monique, elles partagent une relation proche et affectueuse."
+      },
+      "place": [
+        "Mairie",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Joie",
+        "Fierté"
+      ],
+      "description": "Assister au mariage de Thibault était un moment de grande joie. Voir ma tante Monique si heureuse et entourée de ses proches m'a remplie de fierté. La cérémonie à la mairie était solennelle, et la réception était festive et joyeuse. J'ai ressenti beaucoup d'émotion en partageant ce moment avec elle."
+    },
+    {
+      "person": {
+        "id": 8,
+        "name": "Paul",
+        "relationship": "Ami",
+        "age": 76,
+        "occupation": "Retraité",
+        "hobbies": [
+          "Jardinage",
+          "Pêche"
+        ],
+        "description": "Paul est un ami proche de Monique, ils partagent de nombreux souvenirs et moments de vie."
+      },
+      "place": [
+        "Église",
+        "Jardin de la réception"
+      ],
+      "emotion": [
+        "Émotion",
+        "Nostalgie"
+      ],
+      "description": "Le mariage de Thibault était un moment très émouvant. Voir Monique si heureuse m'a rappelé tous les bons moments passés ensemble. La cérémonie à l'église était très émouvante, et le jardin de la réception était magnifique. J'ai ressenti beaucoup de nostalgie en repensant à tous les souvenirs partagés."
+    },
+    {
+      "person": {
+        "id": 9,
+        "name": "Hélène",
+        "relationship": "Cousine",
+        "age": 65,
+        "occupation": "Retraitée",
+        "hobbies": [
+          "Lecture",
+          "Voyage"
+        ],
+        "description": "Hélène est la cousine de Monique, elles partagent de nombreux souvenirs de famille et sont très proches."
+      },
+      "place": [
+        "Mairie",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Joie",
+        "Émotion"
+      ],
+      "description": "Assister au mariage de Thibault était un moment de grande joie. Voir Monique si heureuse et entourée de ses proches m'a remplie d'émotion. La cérémonie à la mairie était solennelle, et la réception était festive et joyeuse. J'ai apprécié chaque moment passé en famille."
+    },
+    {
+      "person": {
+        "id": 10,
+        "name": "Marc",
+        "relationship": "Ami",
+        "age": 71,
+        "occupation": "Retraité",
+        "hobbies": [
+          "Photographie",
+          "Randonnée"
+        ],
+        "description": "Marc est un ami proche de Monique, ils partagent de nombreux souvenirs et moments de vie."
+      },
+      "place": [
+        "Église",
+        "Jardin de la réception"
+      ],
+      "emotion": [
+        "Bonheur",
+        "Sérénité"
+      ],
+      "description": "Le mariage de Thibault était un jour rempli de bonheur. Voir Monique si heureuse et entourée de ses proches m'a apporté beaucoup de sérénité. La cérémonie à l'église était très émouvante, et le jardin de la réception était magnifique. J'ai apprécié chaque moment passé en famille."
+    },
+    {
+      "person": {
+        "id": 11,
+        "name": "Julie",
+        "relationship": "Petite-fille",
+        "age": 30,
+        "occupation": "Designer",
+        "hobbies": [
+          "Peinture",
+          "Yoga"
+        ],
+        "description": "Julie est la petite-fille de Monique, elles partagent une relation très proche et complice."
+      },
+      "place": [
+        "Mairie",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Joie",
+        "Reconnaissance"
+      ],
+      "description": "Assister au mariage de Thibault était un moment de grande joie. Voir ma grand-mère Monique si heureuse et entourée de ses proches m'a remplie de reconnaissance. La cérémonie à la mairie était solennelle, et la réception était festive et joyeuse. J'ai ressenti beaucoup d'émotion en partageant ce moment avec elle."
+    },
+    {
+      "person": {
+        "id": 12,
+        "name": "Éric",
+        "relationship": "Neveu",
+        "age": 48,
+        "occupation": "Informaticien",
+        "hobbies": [
+          "Sport",
+          "Lecture"
+        ],
+        "description": "Éric est le neveu de Monique, ils partagent une relation amicale et complice."
+      },
+      "place": [
+        "Église",
+        "Jardin de la réception"
+      ],
+      "emotion": [
+        "Émotion",
+        "Bonheur"
+      ],
+      "description": "Le mariage de Thibault était un moment très émouvant. Voir ma tante Monique si heureuse et entourée de ses proches m'a rempli de bonheur. La cérémonie à l'église était très émouvante, et le jardin de la réception était magnifique. J'ai apprécié chaque moment passé en famille."
+    },
+    {
+      "person": {
+        "id": 13,
+        "name": "Catherine",
+        "relationship": "Amie",
+        "age": 72,
+        "occupation": "Retraitée",
+        "hobbies": [
+          "Cuisine",
+          "Jardinage"
+        ],
+        "description": "Catherine est une amie proche de Monique, elles partagent de nombreux souvenirs et moments de vie."
+      },
+      "place": [
+        "Mairie",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Joie",
+        "Nostalgie"
+      ],
+      "description": "Assister au mariage de Thibault était un moment de grande joie. Voir Monique si heureuse m'a rappelé tous les bons moments passés ensemble. La cérémonie à la mairie était solennelle, et la réception était festive et joyeuse. J'ai ressenti beaucoup de nostalgie en repensant à tous les souvenirs partagés."
+    },
+    {
+      "person": {
+        "id": 14,
+        "name": "Patrick",
+        "relationship": "Ami",
+        "age": 73,
+        "occupation": "Retraité",
+        "hobbies": [
+          "Pêche",
+          "Vélo"
+        ],
+        "description": "Patrick est un ami proche de Monique, ils partagent de nombreux souvenirs et moments de vie."
+      },
+      "place": [
+        "Église",
+        "Jardin de la réception"
+      ],
+      "emotion": [
+        "Bonheur",
+        "Sérénité"
+      ],
+      "description": "Le mariage de Thibault était un jour rempli de bonheur. Voir Monique si heureuse et entourée de ses proches m'a apporté beaucoup de sérénité. La cérémonie à l'église était très émouvante, et le jardin de la réception était magnifique. J'ai apprécié chaque moment passé en famille."
+    },
+    {
+      "person": {
+        "id": 15,
+        "name": "Isabelle",
+        "relationship": "Cousine",
+        "age": 67,
+        "occupation": "Retraitée",
+        "hobbies": [
+          "Lecture",
+          "Voyage"
+        ],
+        "description": "Isabelle est la cousine de Monique, elles partagent de nombreux souvenirs de famille et sont très proches."
+      },
+      "place": [
+        "Mairie",
+        "Salle de réception"
+      ],
+      "emotion": [
+        "Joie",
+        "Émotion"
+      ],
+      "description": "Assister au mariage de Thibault était un moment de grande joie. Voir Monique si heureuse et entourée de ses proches m'a remplie d'émotion. La cérémonie à la mairie était solennelle, et la réception était festive et joyeuse. J'ai apprécié chaque moment passé en famille."
+    }
+  ]
+}

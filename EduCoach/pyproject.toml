@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "educoach"
+version = "0.1.0"
+description = "Un coach éducatif intelligent utilisant l'IA"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [
+    { include = "app" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+streamlit = "^1.40.1"
+langsmith = "^0.1.145"
+langgraph = "^0.2.53"
+langchain = "^0.3.20"
+langchain-openai = "^0.2.10"
+langchain-community = "^0.3.8"
+python-dotenv = "^1.0.1"
+colorlog = "^6.9.0"
+pyyaml = "^6.0.2"
+tiktoken = "^0.8.0"
+sympy = "^1.13.3"
+graphviz = "^0.20.3"
+mistralai = "^1.6.0"
+streamlit-mic-recorder = "^0.0.8"
+streamlit-chat-widget = "^0.2.0"
+streamlit-extras = "^0.6.0"
+python-magic = "^0.4.27"
+pydantic = "^2.11.1"
+
+[tool.poetry.scripts]
+dev = "app.main:main"
+show-graph = "app.utils.graph_generator:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api" 

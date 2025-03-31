@@ -1,0 +1,83 @@
+[
+    {
+      "id": 6,
+      "category": "famille",
+      "name": "Pierre",
+      "relation": "Mari",
+      "age": 80,
+      "image": "/personne/pierre.png",
+      "audiodescription": "../public/anniversaire.mp3"
+    },
+    {
+      "id": 1,
+      "category": "famille",
+      "name": "Paul",
+      "relation": "Fils",
+      "age": 50,
+      "image": "/personne/pierre_fils.png",
+      "audiodescription": "../public/audio_extrait.wav"
+    },
+    {
+      "id": 2,
+      "category": "famille",
+      "name": "Carole",
+      "relation": "Belle-fille",
+      "age": 47,
+      "image": "/personne/carol_aide_domicile.png",
+      "audiodescription": "../public/audio_extrait.wav"
+    },
+    {
+      "id": 3,
+      "category": "famille",
+      "name": "Thibault",
+      "relation": "Petit-fils",
+      "age": 24,
+      "image": "/personne/fred_petit_fils.png",
+      "audiodescription": "../public/audio_extrait.wav"
+    },
+    {
+      "id": 4,
+      "category": "amis",
+      "name": "Jeanne",
+      "relation": "Amie de toujours",
+      "age": 78,
+      "image": "/placeholder.svg?height=200&width=200",
+      "audiodescription": "../public/audio_extrait.wav"
+    },
+    {
+      "id": 5,
+      "category": "amis",
+      "name": "Claude",
+      "relation": "Voisin",
+      "age": 82,
+      "image": "/placeholder.svg?height=200&width=200",
+      "audiodescription": "../public/audio_extrait.wav"
+    },
+    {
+      "id": 7,
+      "category": "aidants",
+      "name": "Anaïs",
+      "relation": "Infirmière",
+      "age": 28,
+      "image": "/personne/anais.png",
+     "audiodescription": "../public/audio_extrait.wav"
+    },
+    {
+      "id": 8,
+      "category": "famille",
+      "name": "Celeste",
+      "relation": "Petite-fille",
+      "age": 22,
+      "image": "/personne/celeste.png",
+      "audiodescription": "../public/audio_extrait.wav"
+    },
+    {
+      "id": 9,
+      "category": "famille",
+      "name": "Lucien",
+      "relation": "Frère",
+      "age": 79,
+      "image": "/personne/lucien.png",
+      "audiodescription": "../public/audio_extrait.wav"
+    }
+  ]
