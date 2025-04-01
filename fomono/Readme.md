@@ -17,12 +17,12 @@ Un n8n orchestre les interactions entre un bot télégram, une base de données 
 Une équipe de choc composée de : 
 - Stéphanie
 - Anaïs
-- Lucie
+- Zoé
 - Pierre
 - Maël
 - Paul
 
 
-## Mais encore ?
+## Mais encore ?
 
 Tout Teddy ! (tout est dis, tu l'as ?) 
