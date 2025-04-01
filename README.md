@@ -17,7 +17,7 @@
 
 ### Audience favorites:
 
-❤️  Educoach: A virtual assistant to help children with their homework!
+❤️  **Educoach**: A virtual assistant to help children with their homework!
 
 ### Other projects
 
