@@ -9,19 +9,15 @@
 
 ### Top 3
 
-🥇 TODO:
-Blablabla
+🥇 *GenBoost*: A browser extension that makes any text on any website readable for dyslexic users!
 
-🥈 TODO:
-Blablabla
+🥈 *Learn anything*: An assistant that creates personalized training courses and adapts the content to your preferences and skill level!
 
-🥉 TODO:
-Blablabla
+🥉 *𝐔𝐜𝐡𝐫𝐨𝐧𝐢𝐚*: A video game that lets you endlessly explore alternate history scenarios with "what ifs": What if the Russians had landed on the moon first?
 
 ### Audience favorites:
 
-❤️  TODO:
-Blablabla
+❤️  Educoach: A virtual assistant to help children with their homework!
 
 ### Other projects
 
