@@ -13,7 +13,7 @@
 
 🥈 **Learn anything**: An assistant that creates personalized training courses and adapts the content to your preferences and skill level!
 
-🥉 **Uchronia**: A video game that lets you endlessly explore alternate history scenarios with "what ifs": What if the Russians had landed on the moon first?
+🥉 **Uchronia**: A video game that lets you endlessly explore alternate history scenarios with "what ifs": What if the Russians had landed on the moon first? [Test now!](https://uchronia-neon.vercel.app/)
 
 ### Audience favorites:
 
