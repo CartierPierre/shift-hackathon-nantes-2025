@@ -9,7 +9,7 @@
 
 ### Top 3
 
-🥇 **GenBoost**: A browser extension that makes any text on any website readable for dyslexic users!
+🥇 **GenBoost**: A browser extension that makes any text on any website readable for dyslexic users! [Test now!](https://wikipedys.expo.app/)
 
 🥈 **Learn anything**: An assistant that creates personalized training courses and adapts the content to your preferences and skill level!
 
