@@ -23,15 +23,23 @@ function ArticleModal({ article, isOpen, onClose }) {
             <div className="flex justify-between items-start mb-6">
               <div className="flex gap-6">
                 <Dialog.Title className="sr-only">{article.title}</Dialog.Title>
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-48 h-32 object-cover rounded-lg"
-                />
+                {article.img && (
+                  <img
+                    src={article.img}
+                    alt={article.resume || 'Article image'}
+                    className="w-48 h-32 object-cover rounded-lg"
+                  />
+                )}
                 <div>
-                  <h2 className="text-2xl font-semibold">{article.title}</h2>
+                  <h2 className="text-2xl font-semibold">{article.pourquoi || 'Sans résumé'}</h2>
                   <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
                     <span>{article.source}</span>
+                    {article.url && (
+                      <>
+                        <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                        <span>{new Date(article.date_article).toLocaleDateString()}</span>
+                      </>
+                    )}
                     {article.url && (
                       <>
                         <span className="w-1 h-1 bg-gray-300 rounded-full" />
@@ -47,16 +55,37 @@ function ArticleModal({ article, isOpen, onClose }) {
                     )}
                     <span className="w-1 h-1 bg-gray-300 rounded-full" />
                     <div className="flex gap-1">
-                      {article.tags.map((tag) => (
+                      <span
+                        className="px-2 py-0.5 bg-violet/10 text-violet rounded-full"
+                      >
+                        {article.thematique}
+                      </span>
+                      {article.acteurs?.map((acteur, index) => typeof acteur === 'object' ? (
                         <span
-                          key={tag}
+                          key={index}
                           className="px-2 py-0.5 bg-violet/10 text-violet rounded-full"
                         >
-                          {tag}
+                          {acteur.name}
+                        </span>
+                      ) : (
+                        <span
+                          key={index}
+                          className="px-2 py-0.5 bg-violet/10 text-violet rounded-full"
+                        >
+                          {acteur}
                         </span>
                       ))}
                     </div>
                   </div>
+                  {article.source && (
+                    <div className="mt-2 text-sm text-gray-500">
+                      Sources: {Array.isArray(article.source) 
+                        ? article.source.map(s => typeof s === 'object' ? s.name : s).join(', ')
+                        : typeof article.source === 'object' 
+                          ? article.source.name 
+                          : article.source}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -64,8 +93,8 @@ function ArticleModal({ article, isOpen, onClose }) {
                   onClick={() => {
                     if (navigator.share) {
                       navigator.share({
-                        title: article.title,
-                        text: article.summary,
+                        title: article.pourquoi || 'Article partagé',
+                        text: article.resume || '',
                         url: window.location.href,
                       }).catch((error) => console.log('Error sharing:', error));
                     } else {
@@ -74,11 +103,11 @@ function ArticleModal({ article, isOpen, onClose }) {
                         .catch((error) => console.log('Error copying:', error));
                     }
                   }}
-                  className="text-gray-400 hover:text-violet transition"
+                  className="text-[#A284BF] hover:text-[#A360A2] transition"
                 >
                   <Share2 size={20} />
                 </button>
-                <Dialog.Close className="text-gray-400 hover:text-gray-600">
+                <Dialog.Close className="text-[#A284BF] hover:text-[#A360A2]">
                   <X size={24} />
                 </Dialog.Close>
               </div>
@@ -113,7 +142,7 @@ function ArticleModal({ article, isOpen, onClose }) {
             <div className="overflow-y-auto">
               {activeTab === 'summary' && (
                 <div className="prose max-w-none">
-                  <p className="text-gray-600">{article.summary}</p>
+                  <p className="text-gray-600">{article.resume || 'Aucune explication disponible'}</p>
                 </div>
               )}
 
@@ -147,7 +176,7 @@ function ArticleModal({ article, isOpen, onClose }) {
                   />
                   <button
                     onClick={handleAskQuestion}
-                    className="bg-violet text-white px-4 py-2 rounded-lg hover:bg-violet-600 transition"
+                    className="bg-violet-dark text-white px-4 py-2 rounded-lg hover:bg-violet-darker shadow-md hover:shadow-violet/20 transition"
                   >
                     Envoyer
                   </button>

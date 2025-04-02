@@ -1,0 +1,356 @@
+{
+  "name": "deepresearch_m",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=sélectionne les articles récent selon ce critère de décision : \n\n{mode }\n\n\nVoici plusieurs articles de la source nomée \"{vogue}\"\n\n\nDescripton des acrticles : \n{{ $json.data }}\n\n__\nAujourd'hui est le {{ $now.format('dd-MM-yyyy') }}. \nSélectionne les articles les plus récents  et les plus pertinents. \nSélectionne seulement les articles datant de moins de 3 mois, ignore les autres. \nRetourne les articlces sélectionnés au format demandé. \n ",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=sélectionne les articles récent selon ce critère de décision :\n\n{modre}\n\nTu dois retourner au format JSON les données que tu trouves pertinentes. \n\nVoici l'exemple de JSON en sortir \n\n  {\n\n    \"url\": \"https://example.com/article1\",\n    \"pourquoi\": \"la raison pour laquelle on fait cette veille ou recherche\",\n    \"resume\": \"resume cet article de maniere pertinente et claire. rédiger un résumé en 5 lignes\",\n    \"img\": \"https://example.com/images/article1.jpg\",\n    \"date_article\": \"2023-01-05\",\n    \"auteur\": \"nom de l'auteur\",\n    \"acteurs\": [\n      {\n        \"nom\": \"acteur 1\",\n        \"role\": \"Auteur principal\"\n      },\n      {\n        \"nom\": \"acteur\",\n        \"role\": \"Contributeur\"\n      }\n    ],\n    \"source\": [\n      {\n        \"nom\": \"Revue Scientifique\",\n        \"lien\": \"https://revue-scientifique.com/article1\"\n      }\n    ],\n    \"thematique\": \"extraire les thematiques de l'article\"\n  }"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        -960,
+        300
+      ],
+      "id": "e024e235-03b2-44a7-b5dc-9a6162486855",
+      "name": "Basic LLM Chain",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "=https://r.jina.ai/{{ $json['url de recherche '] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "jina_ea7058df177a4a0cbe01e3534974a56bur4td0_Wxy8omicDpC0MIUWuDkRR"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1280,
+        300
+      ],
+      "id": "e0a83bcd-9cd9-443c-823b-595ece21d651",
+      "name": "getWebsite2",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n\n    \"url\": \"https://example.com/article1\",\n    \"pourquoi\": \"Comprendre l'impact du changement climatique\",\n    \"resume\": \"Cet article explore les effets du changement climatique sur les écosystèmes. rédiger un résumé en 5 lignes\",\n    \"img\": \"https://example.com/images/article1.jpg\",\n    \"date_article\": \"2023-01-05\",\n    \"auteur\": \"Jean Dupont\",\n    \"acteurs\": [\n      {\n        \"nom\": \"Organisation Mondiale de la Santé\",\n        \"role\": \"Auteur principal\"\n      },\n      {\n        \"nom\": \"Université de Paris\",\n        \"role\": \"Contributeur\"\n      }\n    ],\n    \"source\": [\n      {\n        \"nom\": \"Revue Scientifique\",\n        \"lien\": \"https://revue-scientifique.com/article1\"\n      }\n    ],\n    \"thematique\": \"Environnement\"\n  }\n]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -720,
+        480
+      ],
+      "id": "be231b0d-65f6-478c-a82e-7a9d05e58681",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -940,
+        480
+      ],
+      "id": "1f009202-8f96-4e26-9745-a829380dec42",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "AoQcP7QevfS30J4e",
+          "name": "Mistral Cloud account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1900,
+        320
+      ],
+      "id": "73ffd7fd-705c-4895-ada3-d3d56eadd50d",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d2f1cff-19bd-44c3-8eaf-17afb46134b5",
+              "name": "url de recherche ",
+              "value": "https://www.vogue.fr/culture",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1600,
+        320
+      ],
+      "id": "95cb223c-efaf-4984-ad0e-cbde0624d6f5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "## plusieur rag , pour obteir toutes les datas\n",
+        "height": 260,
+        "width": 700
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -960,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "d0251e15-971f-4985-9ef3-e8400a6236f8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.n8n-dev.meetmagnet.fr/webhook/scraping",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        400,
+        400
+      ],
+      "id": "00d02926-efc2-4f09-b7c5-42e3ee47dcfd",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## donnée à envoyer dans le body \n\ncreated_at\nurl\npourquoi\nresume\nimg\ndate_article\nauteur\nacteurs\nsource\nthematique\n",
+        "height": 380
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        360,
+        -20
+      ],
+      "typeVersion": 1,
+      "id": "a7ade703-5101-4fc3-a979-6b9b0cb6faa9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Analyse le contenu JSON en entrée : {{ $json.output }}\n\nObjectif : extrait les informations suivantes et retourne un objet JSON structuré exactement comme ci-dessous :\n\n{\n  \"url\": \"\",\n  \"pourquoi\": \"\",\n  \"resume\": \"\",\n  \"img\": \"\",\n  \"date_article\": \"\",\n  \"auteur\": \"\",\n  \"acteurs\": [{\"nom\": \"\"}],\n  \"source\": [{\"type\": \"\"}],\n  \"thematiques\": []\n}\n\nContraintes :\n\n1. Si une information est absente, remplis avec `null`.\n2. Le champ `resume` doit contenir un résumé clair en **français**, sans balises HTML/Markdown.\n3. Pour `thematiques`, identifie toute thématique pertinente en t’appuyant sur la **liste ci-dessous** et leurs synonymes (expressions ou mots-clés associés). Si un sujet est abordé ou fortement suggéré, même indirectement (synonyme, périphrase, abréviation...), ajoute la thématique correspondante.\n\nListe des thématiques à détecter (avec synonymes ou mots-clés associés) :\n\n- **Intelligence Artificielle (IA)**\n  - Synonymes : IA, AI, intelligence machine, apprentissage intelligent\n- **Apprentissage Automatique (Machine Learning)**\n  - Synonymes : machine learning, apprentissage machine, algorithmes d’apprentissage\n- **Deep Learning**\n  - Synonymes : réseaux neuronaux profonds, apprentissage profond\n- **NLP (Traitement du Langage Naturel)**\n  - Synonymes : NLP, Natural Language Processing, traitement automatique du langage\n- **Data Science**\n  - Synonymes : science des données, analyse de données\n- **Big Data**\n  - Synonymes : données massives, large échelle de données\n- **Cloud Computing**\n  - Synonymes : informatique en nuage, services cloud\n- … (etc. répète ce principe pour les autres catégories)\n\nEnsuite, retourne **uniquement** l’objet JSON demandé, sans explication supplémentaire.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -600,
+        300
+      ],
+      "id": "c9d1328e-a986-4318-b7eb-bf7640c91fcd",
+      "name": "AI Agent",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "model": "mistral-large-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        600
+      ],
+      "id": "b3d38cf9-c7b1-444e-a725-866b05e8de2f",
+      "name": "Mistral Cloud Chat Model1",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "AoQcP7QevfS30J4e",
+          "name": "Mistral Cloud account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"url\": \"https://example.com\",\n  \"pourquoi\": \"some text\",\n  \"resume\": \"some text\",\n  \"img\": \"https://example.com/img.jpg\",\n  \"date_article\": \"2025-03-28\",\n  \"auteur\": \"John\",\n  \"acteurs\": [\n    {\n      \"nom\": \"Alice\"\n    }\n  ],\n  \"source\": [\n    {\n      \"type\": \"Blog\"\n    }\n  ],\n  \"thematiques\": [\n    \"theme 1\",\n    \"theme 2\"\n  ]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -340,
+        640
+      ],
+      "id": "d40400d4-d2cf-494b-8675-af277e83065d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Exemple d'un Function Node pour vérifier que l'objet JSON\n * contient bien certaines clés, et qu'elles ont (ou non) une valeur.\n */\nconst item = $input.first().json.output\n\n// Liste des clés attendues\nconst requiredKeys = [\n  \"url\",\n  \"pourquoi\",\n  \"resume\",\n  \"img\",\n  \"date_article\",\n  \"auteur\",\n  \"acteurs\",\n  \"source\",\n  \"thematiques\"\n];\n\n// Vérification de la présence de chaque clé\nfor (const key of requiredKeys) {\n  if (!item.hasOwnProperty(key)) {\n    throw new Error(`Le champ manquant est : ${key}`);\n  }\n}\n\n// Exemple (optionnel) de vérification de type ou de format si vous le souhaitez\n// Par exemple, vérifier que \"acteurs\" est bien un tableau\nif (!Array.isArray(item.acteurs)) {\n  throw new Error(`Le champ \"acteurs\" doit être un tableau`);\n}\n\n// Idem pour \"source\" et \"thematiques\"\nif (!Array.isArray(item.source)) {\n  throw new Error(`Le champ \"source\" doit être un tableau`);\n}\nif (!Array.isArray(item.thematiques)) {\n  throw new Error(`Le champ \"thematiques\" doit être un tableau`);\n}\n\n// Si toutes les vérifications passent, renvoyer l’item tel quel\nreturn items;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        300
+      ],
+      "id": "4bc5ade1-606a-49a1-a963-ad979816a6b9",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "getWebsite2": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "getWebsite2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fb92eff8-9295-4358-9b3b-16b6dc5def37",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e6981d6ffa1780ae3b63372631d4d27fe2e9c4f96a075f9e73ee66bba47c6bf8"
+  },
+  "id": "Zb7WpLpFjsdY0BAm",
+  "tags": []
+}

@@ -1,0 +1,628 @@
+{
+  "name": "resume-hackathlon",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            },
+            {
+              "name": "channel_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -300,
+        -200
+      ],
+      "id": "05155207-b58f-438c-a0a6-3da411204320",
+      "name": "input_agent"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://qdrant.meetmagnet.fr/collections/hackathlon/points/query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key"
+            }
+      
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": [{{ $('sujet embeding').item.json.embeddings[0] }}],\n  \"limit\": 5,\n  \"filter\": {\n    \"must\": [\n      {\n        \"key\": \"table\",\n        \"match\": {\n          \"value\": \"article\"\n        }\n      },\n      {\n        \"key\": \"type\",\n        \"match\": {\n          \"value\": \"resume\"\n        }\n      }\n    ]\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        -200
+      ],
+      "id": "89c3acc2-ba06-4607-ba87-f6624af336e4",
+      "name": "GetPoint3"
+    },
+    {
+      "parameters": {
+        "url": "=https://qdrant.meetmagnet.fr/collections/hackathlon/points/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        -200
+      ],
+      "id": "f974885d-0f2b-411c-b62f-0c9e84ec48f7",
+      "name": "getPointInfo6",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/embed",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "all-minilm:l6-v2"
+            },
+            {
+              "name": "input",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -20,
+        -200
+      ],
+      "id": "8cfe49ef-4f2d-4a50-bf6e-cb58c0c28cea",
+      "name": "sujet embeding"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dae07663-f4ff-4642-a053-31804cb92da9",
+              "name": "id_article",
+              "value": "={{ $json.result.payload.id_table }}",
+              "type": "string"
+            },
+            {
+              "id": "950749a4-0c0d-4a33-9a2e-7a35b5021e5d",
+              "name": "PostContent",
+              "value": "={{ $json.result.payload.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        -200
+      ],
+      "id": "66d295aa-6f33-45ad-ae0e-99c9c2079cec",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "result.points",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        360,
+        -200
+      ],
+      "id": "8b0acb30-e279-4d17-8638-32679252bc52",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        -200
+      ],
+      "id": "4fef0487-ddba-4c94-8354-85af72e8e6e9",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e30ad4c-baa1-49bd-9ed1-8b8655e663fc",
+              "name": "pourquoi",
+              "value": "={{ $('Supabase').item.json.pourquoi }}",
+              "type": "string"
+            },
+            {
+              "id": "2dd3f1ba-4dee-4ca4-bee9-1c0680b56a8f",
+              "name": "resume",
+              "value": "={{ $('Supabase').item.json.resume }}",
+              "type": "string"
+            },
+            {
+              "id": "9248f076-42c6-4b5f-b9c7-650d497b0583",
+              "name": "url",
+              "value": "={{ $('Supabase').item.json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "fc1ea21a-2672-409f-b04a-4b8acc209111",
+              "name": "auteur",
+              "value": "={{ $('Supabase').item.json.auteur }}",
+              "type": "string"
+            },
+            {
+              "id": "f64450a1-e3b9-4ecc-a345-d3a43bca0bdf",
+              "name": "date_article",
+              "value": "={{ $('Supabase').item.json.date_article }}",
+              "type": "string"
+            },
+            {
+              "id": "e15c1c17-7a0b-4511-8974-8a7a10878790",
+              "name": "thematique",
+              "value": "={{ $('Supabase').item.json.thematique }}",
+              "type": "string"
+            },
+            {
+              "id": "31cd4371-0ece-4622-ba69-1a5bdac03ff9",
+              "name": "source",
+              "value": "={{ $('Supabase').item.json.source }}",
+              "type": "array"
+            },
+            {
+              "id": "e35e86b8-264d-4c15-bf81-87aecc8a350f",
+              "name": "id",
+              "value": "={{ $('Supabase').item.json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "223dd65a-a242-4e4a-964b-dd4a34794cef",
+              "name": "Information à capter dans l'article ",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "cd7e0477-463f-4e38-a67b-4fad462760e3",
+              "name": "thématique à capter dans l'article ",
+              "value": "={{ $('GetChanel').item.json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "b7c5ed3b-11a0-4205-8a50-47a2545777ae",
+              "name": "user_id",
+              "value": "={{ $json.user_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1580,
+        -200
+      ],
+      "id": "ead79d71-b031-4e2f-90e0-92faa2616524",
+      "name": "InPutAgent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Répond à la demande de l'utilisateur en utilisant ces information:  \n\nquery de la demande utilisateur : {{ $('input_agent').item.json.query }}\n\nVoici les articles à résumer :  \n\n\n{{ $json.data.toJsonString() }}\n\n\n\nRédige en 5 phrases maximum.",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        2300,
+        -200
+      ],
+      "id": "805c63b6-c532-4970-b8cb-e4e3c47a2663",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "date_article"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        -200
+      ],
+      "id": "fe2e6de8-e557-452a-b1a7-945321025230",
+      "name": "Sort"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        2300,
+        40
+      ],
+      "id": "0dbfa0a3-7ff5-49e7-a91c-49cee479576a",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "nIClK0kbYdBpLiw3",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4ea3be1c-ca53-4219-a9c1-1152ea4ac5eb",
+              "name": "output",
+              "value": "={{ $('Edit Fields3').item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "155dcb57-53f9-44f3-913b-b9113147b450",
+              "name": "component",
+              "value": "article",
+              "type": "string"
+            },
+            {
+              "id": "9ffdb7fa-042d-429a-ab69-d2ce6ec54c80",
+              "name": "components_id",
+              "value": "={{ $json.article_ids }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3140,
+        -220
+      ],
+      "id": "5e49c759-f60b-4aec-ac3a-1756a5323dd3",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "channels",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.channel_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        -200
+      ],
+      "id": "718a4aa6-460b-4f3c-96a4-4b8636fb1bd4",
+      "name": "GetChanel",
+      "retryOnFail": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "articles",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.id_article }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -200
+      ],
+      "id": "adf4d79f-7fdb-4032-b746-a2a704f442a3",
+      "name": "Supabase",
+      "retryOnFail": true,
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraire les ID des articles\nconst articleIds = $input.all().flatMap(item => item.json.data.map(article => article.id.toString()));\n\n// Ajouter la liste des IDs à la sortie\nreturn [{ json: { article_ids: articleIds } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2840,
+        -220
+      ],
+      "id": "6640dbcc-0ef2-403d-b0d5-c896f8aa525a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0589bcae-b4f3-4795-9fe4-907c1b923ae1",
+              "name": "output",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "a9bcea98-46de-475f-b0ee-a06b82812460",
+              "name": "data",
+              "value": "={{ $('Aggregate').item.json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2640,
+        -220
+      ],
+      "id": "fd70428b-2818-4b8e-b92e-32e87311a0bc",
+      "name": "Edit Fields3"
+    }
+  ],
+  "pinData": {
+    "input_agent": [
+      {
+        "json": {
+          "query": "chaussure",
+          "channel_id": "b0bc9b8e-ae62-41e4-8773-0a1d49d1170f"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "GetPoint3": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getPointInfo6": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sujet embeding": {
+      "main": [
+        [
+          {
+            "node": "GetPoint3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "getPointInfo6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "InPutAgent": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "input_agent": {
+      "main": [
+        [
+          {
+            "node": "sujet embeding",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetChanel": {
+      "main": [
+        [
+          {
+            "node": "InPutAgent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "GetChanel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ce28e9d9-e3eb-456d-9397-c390f1ea6534",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "OdHoWuWxCzsU0kAk",
+  "tags": []
+}

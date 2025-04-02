@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
+import Home from './pages/Home'
 import Sidebar from './components/Sidebar'
 import MyMonitoring from './pages/MyMonitoring'
 import Sources from './pages/Sources'
@@ -44,11 +45,12 @@ function App() {
         {!session ? (
           <Login />
         ) : (
-          <div className="flex min-h-screen">
+          <div className="min-h-screen">
             <Sidebar />
-            <main className="flex-1 p-8">
+            <main className="p-8">
               <Routes>
-                <Route path="/" element={<MyMonitoring />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/feeds" element={<MyMonitoring />} />
                 <Route path="/sources" element={<Sources />} />
                 <Route path="/collaborations" element={<Collaborations />} />
                 <Route path="/notifications" element={<Notifications />} />

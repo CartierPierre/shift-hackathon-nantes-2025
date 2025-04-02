@@ -1,0 +1,474 @@
+{
+  "name": "add_article_to_qdrant",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "79bd0fba-6d1b-44e0-af06-3c8de08035c1",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "Traitemant des eaux",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "2921a118-80f7-4cb4-a020-e6e0ad50ccfa",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "Décarbonation",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "3943c3ae-088b-47b8-99c2-5d6d18077022",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1hEyQ4TXVXZwqTgp",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        980,
+        -240
+      ],
+      "id": "599e8f5c-ac03-4ea7-b4ae-455c7b7c7e26",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1hEyQ4TXVXZwqTgp",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        0
+      ],
+      "id": "ba6b07d4-5e18-49ec-bc23-503a26cceaf9",
+      "name": "Execute Workflow1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1hEyQ4TXVXZwqTgp",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        260
+      ],
+      "id": "fa1e4237-15b6-4ae1-ba8a-ac4a9972797b",
+      "name": "Execute Workflow2"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "articles",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "2d744edf-c5a0-4743-a820-07dfea0b3185",
+      "name": "GetArticle",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bba322ca-14e5-4024-86d4-6ee11447f369",
+              "name": "id_table",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e370e6bc-dbd1-48e5-92b0-fb082eeb74c5",
+              "name": "source",
+              "value": "={{ $json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "39759769-9ba5-4434-8a01-65acfc8a74a8",
+              "name": "thematique",
+              "value": "={{ $json.thematique }}",
+              "type": "string"
+            },
+            {
+              "id": "0d394eda-f10d-46f0-86ff-b360b59e579c",
+              "name": "text",
+              "value": "={{ $json.pourquoi }}",
+              "type": "string"
+            },
+            {
+              "id": "2e00bf19-2988-48ad-9a35-38ed22d87edf",
+              "name": "type",
+              "value": "pourquoi",
+              "type": "string"
+            },
+            {
+              "id": "9d45c0e1-16c1-409d-84dc-33df1837c65a",
+              "name": "table",
+              "value": "article",
+              "type": "string"
+            },
+            {
+              "id": "f58c3ad4-cdc9-4c03-b123-fc4f0dbabb0d",
+              "name": "user_id",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "ebe6b22c-5a77-4cf5-a22b-05b59c1a5d01",
+              "name": "channel_id",
+              "value": "={{ $json.channel_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        700,
+        -240
+      ],
+      "id": "cf0ccd3b-5e2b-4798-b193-b329d21cbd35",
+      "name": "data_pourquoi_to_qdrant"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bba322ca-14e5-4024-86d4-6ee11447f369",
+              "name": "id_table",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e370e6bc-dbd1-48e5-92b0-fb082eeb74c5",
+              "name": "source",
+              "value": "={{ $json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "39759769-9ba5-4434-8a01-65acfc8a74a8",
+              "name": "thematique",
+              "value": "={{ $json.thematique }}",
+              "type": "string"
+            },
+            {
+              "id": "0d394eda-f10d-46f0-86ff-b360b59e579c",
+              "name": "text",
+              "value": "={{ $json.resume }}",
+              "type": "string"
+            },
+            {
+              "id": "2e00bf19-2988-48ad-9a35-38ed22d87edf",
+              "name": "type",
+              "value": "resume",
+              "type": "string"
+            },
+            {
+              "id": "9d45c0e1-16c1-409d-84dc-33df1837c65a",
+              "name": "table",
+              "value": "article",
+              "type": "string"
+            },
+            {
+              "id": "f58c3ad4-cdc9-4c03-b123-fc4f0dbabb0d",
+              "name": "user_id",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "ebe6b22c-5a77-4cf5-a22b-05b59c1a5d01",
+              "name": "channel_id",
+              "value": "={{ $json.channel_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        680,
+        -20
+      ],
+      "id": "efab2718-d0c1-4319-8444-cddd4db13286",
+      "name": "data_resume_to_qdrant1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bba322ca-14e5-4024-86d4-6ee11447f369",
+              "name": "id_table",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e370e6bc-dbd1-48e5-92b0-fb082eeb74c5",
+              "name": "source",
+              "value": "={{ $json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "39759769-9ba5-4434-8a01-65acfc8a74a8",
+              "name": "thematique",
+              "value": "={{ $json.thematique }}",
+              "type": "string"
+            },
+            {
+              "id": "0d394eda-f10d-46f0-86ff-b360b59e579c",
+              "name": "text",
+              "value": "={{ $json.thematique }}",
+              "type": "string"
+            },
+            {
+              "id": "2e00bf19-2988-48ad-9a35-38ed22d87edf",
+              "name": "type",
+              "value": "thematique",
+              "type": "string"
+            },
+            {
+              "id": "9d45c0e1-16c1-409d-84dc-33df1837c65a",
+              "name": "table",
+              "value": "article",
+              "type": "string"
+            },
+            {
+              "id": "f58c3ad4-cdc9-4c03-b123-fc4f0dbabb0d",
+              "name": "user_id",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "ebe6b22c-5a77-4cf5-a22b-05b59c1a5d01",
+              "name": "channel_id",
+              "value": "={{ $json.channel_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        680,
+        320
+      ],
+      "id": "36f0dd8b-aec7-454d-ba23-47bcedd9c80d",
+      "name": "data_thematique_to_qdrant"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7b8642ec-2abe-4fe5-8bc4-95a35c055833",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "data_pourquoi_to_qdrant",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "data_resume_to_qdrant1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "data_thematique_to_qdrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetArticle": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data_pourquoi_to_qdrant": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data_resume_to_qdrant1": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data_thematique_to_qdrant": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "GetArticle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "32051e0d-712f-42a5-9f8f-6a5b4538b329",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "PuOHRKFXw5CTAiOc",
+  "tags": [
+    {
+      "createdAt": "2025-03-29T20:54:49.609Z",
+      "updatedAt": "2025-03-29T20:54:49.609Z",
+      "id": "D2USphdOGO8ASQdY",
+      "name": "hakathlon"
+    }
+  ]
+}

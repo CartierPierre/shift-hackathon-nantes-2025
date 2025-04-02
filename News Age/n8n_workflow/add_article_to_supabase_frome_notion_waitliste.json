@@ -1,0 +1,403 @@
+{
+  "name": "add-article-to-supabase-frome-notion-waitliste",
+  "nodes": [
+    {
+      "parameters": {
+        "tableId": "articles",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $json.url }}"
+            },
+            {
+              "fieldId": "pourquoi",
+              "fieldValue": "={{ $json.pourquoi }}"
+            },
+            {
+              "fieldId": "resume",
+              "fieldValue": "={{ $json.resume }}"
+            },
+            {
+              "fieldId": "img",
+              "fieldValue": "={{ $json.img }}"
+            },
+            {
+              "fieldId": "date_article",
+              "fieldValue": "={{ $json.date_article }}"
+            },
+            {
+              "fieldId": "auteur",
+              "fieldValue": "={{ $json.auteur }}"
+            },
+            {
+              "fieldId": "acteurs",
+              "fieldValue": "={{ $json.acteurs }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "={{ $json.source }}"
+            },
+            {
+              "fieldId": "thematique",
+              "fieldValue": "={{ $json.source }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "channel_id",
+              "fieldValue": "={{ $json.channel_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        360,
+        -20
+      ],
+      "id": "de7b851a-d6ab-42ea-98db-c22286e1d177",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Wb8oFIkHFKdZQioV",
+          "name": "etienne-supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "df781bcd-cabf-408b-be51-c315ff77354c",
+              "name": "url",
+              "value": "={{ $('Notion').item.json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "37f690c6-21e5-497b-bc62-2926e3884300",
+              "name": "pourquoi",
+              "value": "={{ $('Notion').item.json.property_pourquoi }}",
+              "type": "string"
+            },
+            {
+              "id": "092dd6e8-4ea0-4b4f-acf4-f584e810292f",
+              "name": "resume",
+              "value": "={{ $('Notion').item.json.property_resume }}",
+              "type": "string"
+            },
+            {
+              "id": "6dd0ab0a-c557-4062-a42b-5560614ea00b",
+              "name": "img",
+              "value": "={{ $('Notion').item.json.property_image[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "d24806c4-a84d-4239-a86a-8bce3496ad7e",
+              "name": "date_article",
+              "value": "={{ $('Notion').item.json.property_date_article.start }}",
+              "type": "string"
+            },
+            {
+              "id": "70b99689-c7c3-4a12-a427-932d67897cdf",
+              "name": "auteur",
+              "value": "=[\"{{ $('Notion').item.json.property_auteur }}\"]",
+              "type": "array"
+            },
+            {
+              "id": "6db84400-8ea5-40ff-a506-25e3bb0203ec",
+              "name": "source",
+              "value": "=[\"{{ $('Notion').item.json.property_source }}\"]",
+              "type": "array"
+            },
+            {
+              "id": "505cc083-317c-425b-a01e-b1767babdef5",
+              "name": "thematique",
+              "value": "=[\"{{ $('Notion').item.json.property_thematique }}\"]",
+              "type": "array"
+            },
+            {
+              "id": "abfa4aae-7ea7-4f2c-884e-131ce38259e3",
+              "name": "acteur",
+              "value": "[\"\"]",
+              "type": "array"
+            },
+            {
+              "id": "7bd62033-35b5-447f-a5e4-fb4cdf0dfc4d",
+              "name": "channel_id",
+              "value": "={{ $('Notion').item.json.property_id.trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        120,
+        -20
+      ],
+      "id": "ee7de503-8583-4529-a14a-a9d8361cefbd",
+      "name": "inputsupabase"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "PuOHRKFXw5CTAiOc",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        600,
+        -20
+      ],
+      "id": "17c403ec-efd7-49b4-b5b0-58b620a64ecd",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "https://www.notion.so/meetmagnet/1c6253f8588180689396e9897a5c677d?v=1c6253f8588181cf9779000c42e77d08",
+          "mode": "url"
+        },
+        "returnAll": true,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Sélection|select",
+              "condition": "is_empty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        -20
+      ],
+      "id": "a0f33f45-dca1-4fc2-9fa2-8730870bbe69",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "sX18HcJ910JDus6n",
+          "name": "Notion MeetMagnet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Notion').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Sélection|select",
+              "selectValue": "DONE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        820,
+        -20
+      ],
+      "id": "9ffe7b5f-56f0-4a38-818d-06bca4c5c06c",
+      "name": "Notion1",
+      "credentials": {
+        "notionApi": {
+          "id": "sX18HcJ910JDus6n",
+          "name": "Notion MeetMagnet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec07c66e-d03e-454c-80d3-dcaf6d76f6e3",
+              "name": "query",
+              "value": "={{ $json.property_thematique }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -100,
+        -20
+      ],
+      "id": "8a300aae-4401-4018-821a-9a8dfc53934e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1zHdHPyMI2G2Fake",
+          "mode": "list",
+          "cachedResultName": "find_channels_from_input"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        -380
+      ],
+      "id": "2ed40f1b-9f38-4500-8c40-fcfa0454ce7c",
+      "name": "find_channels_from_input"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -600,
+        -20
+      ],
+      "id": "0c693581-0f79-4e83-bbfe-96498b270df1",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "inputsupabase": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Notion1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "inputsupabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_channels_from_input": {
+      "main": [
+        []
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5432dddd-8ba0-4d18-9636-355f9aab1bc3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "bxvirHulX684OawM",
+  "tags": [
+    {
+      "createdAt": "2025-03-29T20:54:49.609Z",
+      "updatedAt": "2025-03-29T20:54:49.609Z",
+      "id": "D2USphdOGO8ASQdY",
+      "name": "hakathlon"
+    }
+  ]
+}

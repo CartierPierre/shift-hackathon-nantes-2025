@@ -1,44 +1,133 @@
-import { dummySources } from '../data/dummyData'
-import { useState } from 'react'
-import { Plus, Pencil, Trash2, ExternalLink } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Plus, Pencil, Trash2, ExternalLink, ChevronLeft } from 'lucide-react'
 import SourceModal from '../components/SourceModal'
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal'
+import { supabase } from '../lib/supabase'
+import { useNavigate } from 'react-router-dom'
 
 function Sources() {
-  const [sources, setSources] = useState(dummySources)
+  const [sources, setSources] = useState([])
   const [isSourceModalOpen, setIsSourceModalOpen] = useState(false)
   const [sourceToEdit, setSourceToEdit] = useState(null)
   const [sourceToDelete, setSourceToDelete] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [user, setUser] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    // Get the current user
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+    })
+
+    fetchSources()
+  }, [])
+
+  const fetchSources = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('sources')
+        .select('*')
+
+      if (error) throw error
+
+      setSources(data)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Calculate source statistics
   const totalSources = sources.length
   const sourcesWithNotes = sources.filter(source => source.notes?.trim()).length
 
-  const handleSaveSource = (source) => {
-    if (source.id) {
-      setSources(sources.map(s => s.id === source.id ? source : s))
-    } else {
-      setSources([...sources, { ...source, id: sources.length + 1 }])
+  const handleSaveSource = async (source) => {
+    try {
+      if (!user) throw new Error('User not authenticated')
+
+      if (source.id) {
+        const { error } = await supabase
+          .from('sources')
+          .update({
+            name: source.name,
+            description: source.description,
+            url: source.url,
+            notes: source.notes,
+            user_id: user.id
+          })
+          .eq('id', source.id)
+
+        if (error) throw error
+      } else {
+        const { error } = await supabase
+          .from('sources')
+          .insert({
+            name: source.name,
+            description: source.description,
+            url: source.url,
+            notes: source.notes,
+            user_id: user.id
+          })
+
+        if (error) throw error
+      }
+
+      await fetchSources()
+    } catch (error) {
+      console.error('Error saving source:', error)
     }
   }
 
-  const handleDeleteSource = (sourceId) => {
-    setSources(sources.filter(source => source.id !== sourceId))
+  const handleDeleteSource = async (sourceId) => {
+    try {
+      const { error } = await supabase
+        .from('sources')
+        .delete()
+        .eq('id', sourceId)
+
+      if (error) throw error
+
+      await fetchSources()
+    } catch (error) {
+      console.error('Error deleting source:', error)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet"></div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-600">
+        Une erreur est survenue: {error}
+      </div>
+    )
   }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Sources</h1>
-          <p className="text-gray-600 mt-2">
-            {totalSources} source{totalSources !== 1 ? 's' : ''} au total • 
-            {sourcesWithNotes} avec des notes
-          </p>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center text-gray-600 hover:text-violet transition"
+          >
+            <ChevronLeft size={20} />
+            <span>Retour au chat</span>
+          </button>
+          <h1 className="text-3xl font-bold">Mes Refs</h1>
         </div>
         <button
           onClick={() => setIsSourceModalOpen(true)}
-          className="bg-violet text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition flex items-center gap-2"
+          className="bg-violet-dark text-white px-4 py-2 rounded-lg hover:bg-violet-darker shadow-md hover:shadow-violet/20 transition flex items-center gap-2"
         >
           <Plus size={20} />
           Nouvelle Source
@@ -57,7 +146,7 @@ function Sources() {
             <div key={source.id} className="flex items-center justify-between p-4 bg-offwhite rounded-lg">
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-violet rounded-full flex items-center justify-center text-white">
-                  {source.initials}
+                  {source.name.split(' ').map(word => word[0]).join('').toUpperCase()}
                 </div>
                 <div>
                   <h3 className="font-medium">{source.name}</h3>

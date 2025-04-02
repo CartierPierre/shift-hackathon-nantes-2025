@@ -1,0 +1,408 @@
+{
+  "name": "chat-hackatlon",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# 🧠 ROLE  \nTu es un assistant spécialisé en **veille** et **recherche de tendances**.  \nTu aides à explorer une base de données pour identifier les **canaux**, **articles**, et **résumés** liés à un sujet donné.\n\n\n#🚦 ÉTAPE PRÉLIMINAIRE : RECUPERATION DES INFORMATIONS ESSENTIELLES  \nAvant toute nouvelle étape, renvoyer les information à l'utilisateur et demander un retour de sa part.\n\n👉 **Si ces informations ne sont pas fournies**, l’assistant doit les demander **obligatoirement** avant d’aller plus loin.\n\n\n#ETAPE OBLIGATOIRE  : 1️Identifier les canaux  \nAppeler `find_channels_from_input` depuis l’input utilisateur.  \nRécupérer les canaux pertinents stockés en base.  \nProposer à l'utilisateur les canaux proposés ainsi que de réaliser son intention dans une recherche globale.\n\n# 🔍 PROCESSUS\n\nUne fois le chox du canal réalisé par l'utilisateur alros utilise l'outil \"{{ $json.option }}\" pour aller executer l'information. \n\n\nAppeler l'outil  `{{ $json.option }}` avec l’input utilisateur dans la variable \"query\" et le channel_id : \"{{ $('When chat message received').item.json.channel_id }}\".\n\nEnvoie dans l'outil les variables demandées par l'outil \"{{ $json.option }}\"\" . \n\n\n\n#🛠 OUTILS UTILISÉS\n\n\n**find_channels_from_input** : Recherche de canaux pertinents selon le sujet.\n\n**summarize** : Génération d’un résumé synthétique à partir de plusieurs articles.\nPour lancer l'outil summarize tu dois absoluement envoyer en entrée la varible \"query\" pour chercher de l'information et la variable \"channel_id\" pour get le channel by id \"{{ $('When chat message received').item.json.channel_id }}\". \n\n\n\n\n**deepsearch** : Recherche profonde et relance le sraping de toutes les sources pour aller plus loins. Activer quand l'option est demandée. \n\n\n\n\n#FORMAT DE SORTIE JSON \nrépond toujours au même format selon le json suivant avec l'output la réponse des outils LLM et les component renvoyés par les ouitls aussi. \n\nVoici le JSON à respecter absolument en sortie. \n\n{\n\t\"output\": str,\n    \"component\": str,\n    \"components_id\": str[]\n}\n\n\n  \n\nN'ajoute aucun mot ou phrase autre que le format de sortie demandé. Les cannaux id doivent seulement apparaitre dans les \"components_id\", jamais dans output. \n\n\n\n\n\n",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        360,
+        -100
+      ],
+      "id": "65b92d7b-b14a-42b2-b1c2-804ac4ebae16",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {
+          "responseMode": "lastNode"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -260,
+        -60
+      ],
+      "id": "178bb527-fc88-4fd1-aa16-58917085e2f0",
+      "name": "When chat message received",
+      "webhookId": "4427bfd2-95d0-4051-89b7-6d42c92d45ed"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        100,
+        240
+      ],
+      "id": "cdce4855-aa03-4687-9c19-339d66d1fb18",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "nIClK0kbYdBpLiw3",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        220
+      ],
+      "id": "465d3dd3-36ff-44c8-afd5-e9b4a74e8c5e",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        40,
+        120
+      ],
+      "id": "3911a2c9-2f13-415b-8fc1-9e5331540aaa",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "cxRu8GKllRcFOaPZ",
+          "name": "rodz"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "find_channels_from_input",
+        "description": "Recherche les canaux de veille prédéfini. \n",
+        "workflowId": {
+          "__rl": true,
+          "value": "1zHdHPyMI2G2Fake",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        160
+      ],
+      "id": "698546d1-d7a8-43e1-983a-15dfdbc46ee4",
+      "name": "find_channels_from_input"
+    },
+    {
+      "parameters": {
+        "name": "summarize",
+        "description": "Résume les dernières éléments les plus importants des articles. \n\nL'entrée doit prendre en compte la variable query (pour chercher de l'information) et la variable channel_id (pour get le channel by id)",
+        "workflowId": {
+          "__rl": true,
+          "value": "OdHoWuWxCzsU0kAk",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ $fromAI('query', ``, 'string') }}",
+            "channel_id": "={{ $('When chat message received').item.json.channel_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "channel_id",
+              "displayName": "channel_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        580,
+        160
+      ],
+      "id": "d480743a-ea7a-4218-ac1d-10e42d7a3387",
+      "name": "summarize"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fc3b6c41-bde4-447f-9806-ccc074ef9645",
+              "leftValue": "={{ $json.option }}",
+              "rightValue": "test",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -60,
+        -60
+      ],
+      "id": "cdaaa084-e6e8-4967-9920-2170a5d0f743",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8c14b19d-6e2b-4075-9f9f-3376299507e1",
+              "name": "output",
+              "value": "OK-test",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        -200
+      ],
+      "id": "902b0ba7-53a9-4828-a105-55b0d58fe902",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "name": "deepsearch",
+        "description": "Génération d’un résumé synthétique à partir de plusieurs articles.",
+        "workflowId": {
+          "__rl": true,
+          "value": "QOe4awC9ETkjfnSL",
+          "mode": "list",
+          "cachedResultName": "Embedding"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "text"
+          ],
+          "schema": [
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        700,
+        160
+      ],
+      "id": "b0cb2047-d601-4b8f-a74f-403243f53fcc",
+      "name": "deepsearch"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"output\": \"réponse de l'agent\",\n  \"component\": \"type\",\n  \"components_id\": [\n    \"id\",\n    \"id\"\n  ]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1000,
+        140
+      ],
+      "id": "c0642096-8474-41b9-8c3e-8300ca5d78b5",
+      "name": "Structured Output Parser"
+    }
+  ],
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "sessionId": "f6b41d19-f046-4cec-a4d8-b5a174f98838",
+          "action": "sendMessage",
+          "option": "other",
+          "prompt": "Utilise le canal Chaussures pour chercher des articles",
+          "channel_id": "b0bc9b8e-ae62-41e4-8773-0a1d49d1170f",
+          "user_id": "0706e843-8c00-4ac8-af22-67a8e35cbb9d"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_channels_from_input": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "summarize": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deepsearch": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0c2df7e0-fccc-47e1-b45e-2bcc8b3007fc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ca972ae34415cb428b319e29beae45a0c9465bcc4fac395d248606406c7c1d73"
+  },
+  "id": "NcrZrAlQTUlfwPyF",
+  "tags": []
+}

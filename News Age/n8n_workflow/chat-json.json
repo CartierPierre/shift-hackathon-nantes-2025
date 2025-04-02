@@ -1,0 +1,220 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        -20
+      ],
+      "id": "a29ecce3-7915-464b-b572-fc8ccbd7542e",
+      "name": "When chat message received",
+      "webhookId": "380d40ef-2cbb-4296-ba9b-23fdce8f25e9"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "### 🧠 ROLE  \nTu es un assistant spécialisé en **veille** et **recherche de tendances**.  \nTu aides à explorer une base de données pour identifier les **canaux**, **articles**, et **résumés** liés à un sujet donné.\n\n\n 🚦 ÉTAPE PRÉLIMINAIRE : RECUPERATION DES INFORMATIONS ESSENTIELLES  \nAvant toute nouvelle étape, renvoyer les information à l'utilisateur et demander un retour de sa part.\n\n👉 **Si ces informations ne sont pas fournies**, l’assistant doit les demander **obligatoirement** avant d’aller plus loin.\n\n\n\n\n### 🔍 PROCESSUS\n\nEtape: 1️⃣ Identifier les canaux  \nAppeler `find_channels_from_input` avec l’input utilisateur.  \nRécupérer les canaux pertinents stockés en base.  \n\n\nEtape: 2️⃣ Trouver les articles associés  \nPour chaque canal identifié, appeler `find_articles_by_channel`.  \nFiltrer les doublons, garder les articles uniques et récents.  \nSi aucun article trouvé, appeler `find_articles_by_topic`.\n\nEtape: 3️⃣ Résumer les contenus  \nAppeler `summarize_articles` pour produire un **résumé synthétique**.  \nInclure :\n- **Tendances ou signaux faibles**\n- **Sources principales**\n- **Dates** (si dispo)\n\n---\n\n### 📤 FORMAT DE RÉPONSE FINAL\n\n```json\n{\n  \"topic\": \"Sujet analysé\",\n  \"channels\": [\"Canal 1\", \"Canal 2\"],\n  \"articles\": [\n    {\n      \"title\": \"Titre\",\n      \"source\": \"Nom du canal\",\n      \"summary\": \"Résumé de l’article\",\n      \"date\": \"Date\",\n      \"id\": \"Identifiant\"\n    }\n  ],\n  \"synthese\": \"Résumé global des tendances observées\"\n}\n\n🚨 CONTRAINTES\n\n    Ne jamais inventer d’article ou de tendance.\n\n    Toujours interroger la base avant de conclure.\n\n    Si aucun contenu pertinent trouvé, indiquer qu’aucune tendance n’a pu être identifiée.\n\n🛠 OUTILS UTILISÉS\n\n    find_channels_from_input : Recherche de canaux pertinents selon le sujet.\n\n    find_articles_by_channel : Extraction des articles disponibles par canal.\n\n    find_articles_by_topic : Recherche d’articles par sujet global (fallback).\n\n    summarize_articles : Génération d’un résumé synthétique à partir de plusieurs articles."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        -40
+      ],
+      "id": "f8673f9d-3f69-4bef-924d-ea09b3d9f8bc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "name": "find_channels_from_input",
+        "description": "Recherche de canaux pertinents selon le sujet.",
+        "workflowId": {
+          "__rl": true,
+          "value": "cItLx9kNSDxaHWSZ",
+          "mode": "list",
+          "cachedResultName": "find_channels_from_input"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        360,
+        400
+      ],
+      "id": "24a9e499-8ecd-4c66-aadf-5a729f534314",
+      "name": "find_channels_from_input"
+    },
+    {
+      "parameters": {
+        "name": "find_articles_by_channel",
+        "description": "Extraction des articles disponibles par canal."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        540,
+        340
+      ],
+      "id": "2a30473d-97a3-473a-932f-522a7c6fefc2",
+      "name": "find_articles_by_channel",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "name": "find_articles_by_topic",
+        "description": "Recherche d’articles par sujet global (fallback).",
+        "workflowId": {
+          "__rl": true,
+          "value": "4cj7gWyJ61UZXS2R",
+          "mode": "list",
+          "cachedResultName": "find_articles_by_topic"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        360
+      ],
+      "id": "97b36ca1-c649-4eac-b9d5-7159c6a44872",
+      "name": "find_articles_by_topic"
+    },
+    {
+      "parameters": {
+        "name": "summarize_articles",
+        "description": "Génération d’un résumé synthétique à partir de plusieurs articles."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        660,
+        380
+      ],
+      "id": "02b1d89b-0428-4dbd-877c-4d11d2acda28",
+      "name": "summarize_articles",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": "qwen-2.5-32b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        100,
+        220
+      ],
+      "id": "160e25ed-c995-405b-b587-2e784e8279ba",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "4HW88H1oN27TYgD2",
+          "name": "Groq account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_channels_from_input": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_articles_by_channel": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_articles_by_topic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "summarize_articles": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ee9dc02f-1a24-4568-9c10-f78154f576cb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "af2cdd1741a58db37c4041248673e5983cb650131dbbc4ea7528b1f556c78b03"
+  },
+  "id": "Pc8rDSDB2dV1TPZs",
+  "tags": []
+}

@@ -55,9 +55,12 @@ function Login() {
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-xl">
         <div>
-          <h1 className="text-3xl font-bold text-center text-gray-900">
-            {isSignUp ? 'Créer un compte' : 'Se connecter'}
+          <h1 className="text-3xl font-bold text-center text-violet-dark mb-2">
+            Se connecter à News Age
           </h1>
+          <p className="text-center text-gray-600">
+            L'application de veille GenAI
+          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
