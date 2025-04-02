@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Resume {
+  id         Int    @id @default(autoincrement())
+  sentence   String
+  updateAt   DateTime?
+  createAt   DateTime
+}
+
+model Speaker {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(50)
+  conversations Conversation[]
+}
+
+model Trouble {
+  id         Int    @id @default(autoincrement())
+  name       String @db.VarChar(50)
+  definition String
+}
+
+model Profile {
+  id         Int    @id @default(autoincrement())
+  name       String? @db.VarChar(50)
+  lastname   String? @db.VarChar(50)
+  birthDate  DateTime?
+  culture    String? @db.VarChar(254)
+  follow     Boolean
+  pathologies Have[] // Ajout du champ relationnel
+}
+
+model Pathology {
+  id            Int    @id @default(autoincrement())
+  selfDiagnosis Boolean
+  proDiagnosis  Boolean
+  diagnosis     String
+  createAt      DateTime
+  profiles      Have[] // Ajout du champ relationnel
+}
+
+model Have {
+  profileId    Int
+  pathologyId  Int
+  profile      Profile   @relation(fields: [profileId], references: [id])
+  pathology    Pathology @relation(fields: [pathologyId], references: [id])
+  @@id([profileId, pathologyId])
+}
+
+model Conversation {
+  id         Int    @id @default(autoincrement())
+  sentence   String
+  createAt   DateTime
+  updateAt   DateTime?
+  speakerId  Int
+  speaker    Speaker @relation(fields: [speakerId], references: [id])
+  analysis   Analysis?
+}
+
+model Analysis {
+  id             Int    @id @default(autoincrement())
+  sentence       String
+  mood           Int
+  createAt       DateTime
+  conversationId Int    @unique
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  consumes       Consume[] // Ajout du champ relationnel
+}
+
+model Substance {
+  id         Int    @id @default(autoincrement())
+  recreative Boolean
+  medicine   Boolean
+  substance  String? @db.VarChar(50)
+  consumes   Consume[] // Ajout du champ relationnel
+}
+
+model Consume {
+  analysisId  Int
+  substanceId Int
+  analysis    Analysis  @relation(fields: [analysisId], references: [id])
+  substance   Substance @relation(fields: [substanceId], references: [id])
+  @@id([analysisId, substanceId])
+}
