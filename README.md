@@ -21,8 +21,18 @@
 
 ### Other projects
 
-🧨 TODO:
-Blablabla
+🧨 **Ne m'oublie pas**: Creates emotional and interactive experiences for Alzheimer's patients by reactivating their memories through personalized images, sounds, and stories.
 
-🧨 TODO:
-Blablabla
+🧨 **Camille**: Conversational assistant designed to support young people experiencing early signs of psychological distress, offering immediate and oriented support to prevent situations from worsening.
+
+🧨 **FlashBac**: A TikTok account that revisits historical events through AI-generated videos and images, aiming to make learning dates and historical events more engaging and adaptable to the habits of younger audiences.
+
+🧨 **AIxerice**: Creates school exercises based on real-life situations to enhance student understanding and engagement while reducing dropout rates.
+
+🧨 **NewsAge**: Dashboard designed to centralize and automatically sort news from various sources, providing daily content organized in real-time to alleviate information overload and offer clear and efficient access to news.
+
+🧨 **HackMyPrompt**: Helps teachers and students to secure and optimize the use of AI, focusing on learning how to structure prompts effectively to protect personal data.
+
+🧨 **Teddy**: Helps users discover local events happening nearby, addressing the challenge of finding interesting activities without relying on specific venues or locations.
+
+🧨 **Monte**: Eases the sorting and identification of multimedia content (videos, images, sounds) by automatically de-rushing and classifying them by type and theme.
