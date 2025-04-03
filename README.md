@@ -25,7 +25,7 @@
 
 🧨 **Camille**: Conversational assistant designed to support young people experiencing early signs of psychological distress, offering immediate and oriented support to prevent situations from worsening.
 
-🧨 **FlashBac**: A TikTok account that revisits historical events through AI-generated videos and images, aiming to make learning dates and historical events more engaging and adaptable to the habits of younger audiences.
+🧨 **FlashBac**: A TikTok account that revisits historical events through AI-generated videos and images, aiming to make learning dates and historical events more engaging and adaptable to the habits of younger audiences. [Test now!](https://flashbac-chrono-craft.lovable.app/)
 
 🧨 **AIxerice**: Creates school exercises based on real-life situations to enhance student understanding and engagement while reducing dropout rates.
 
@@ -35,4 +35,4 @@
 
 🧨 **Teddy**: Helps users discover local events happening nearby, addressing the challenge of finding interesting activities without relying on specific venues or locations.
 
-🧨 **Monte**: Eases the sorting and identification of multimedia content (videos, images, sounds) by automatically de-rushing and classifying them by type and theme.
+🧨 **Monte**: Eases the sorting and identification of multimedia content (videos, images, sounds) by automatically de-rushing and classifying them by type and theme. [Test now!](https://monte-1avri9hlp-maxime-bodereaus-projects.vercel.app/)
